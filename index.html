@@ -1,0 +1,3578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scorpiora</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.9.4/dist/css/tempus-dominus.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+   
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    
+   
+</head>
+<body>
+    
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo">arOwipOkqs<span></span></div>
+            <p class="splash-tagline">Raw, Organic, and of course, Fresh!</p>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Welcome Bonus Modal -->
+    <div class="welcome-modal" id="welcomeModal">
+        <div class="welcome-content">
+            <button class="close-modal" id="closeWelcomeModal" style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 20px; cursor: pointer;">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2>Welcome to Scorpiora!</h2>
+            <p>Register now and get <strong>100 free points</strong> to use on your first order!</p>
+            <input type="tel" id="welcomePhone" placeholder="Enter your phone number">
+            <button class="btn" id="registerBtn">Register & Get Points</button>
+            <button class="btn btn-secondary" id="skipRegisterBtn" style="margin-top: 10px;">Skip, I'll register later</button>
+            <p id="welcomeMessage" style="display:none; color:green; margin-top:10px;">Registration successful! 100 points added to your account.</p>
+        </div>
+    </div>
+
+    <!-- Copy Notification -->
+    <div class="copy-notification" id="copyNotification">
+        Account number copied to clipboard!
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content" id="modalContent">
+            <button class="close-modal" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <!-- Modal content will be loaded here -->
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <!-- Mobile menu button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="top-bar">
+                <div class="logo">
+                    <h4>Scorpiora</h4>
+                </div>
+                
+                <div class="user-actions">
+                    <a href="#" id="cartLink"><i class="fas fa-shopping-cart"></i> 
+                        <span class="cart-count" id="cartCount">0</span>
+                    </a>
+                    <a href="#" id="pointsLink"><i class="fas fa-coins"></i></a>
+                    <a href="admin.html" id="adminLink"><i class="#"></i></a>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="nav-link" data-page="home">Home</a></li>
+                    <li><a href="#" class="nav-link" data-page="products">Our Products</a></li>
+                    <li><button class="catalog-btn" id="catalogBtn">Catalog</button></li>
+                    <li><a href="#" class="nav-link" data-page="guest-house">Guest House</a></li>
+                   <li><a href="#" class="mobile-nav-link" data-page="booking"><i class="fas fa-calendar-alt"></i> Bookings</a></li>
+                    <li><a href="#" class="nav-link" data-page="order-status">Order Status</a></li>
+                    <li><a href="#" class="nav-link" data-page="points">Redeem Points</a></li>
+                    <li><a href="#" class="nav-link" data-page="location">Location</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Catalog Menu -->
+    <div class="catalog-menu" id="catalogMenu">
+        <div class="catalog-header">
+            <h4>Product Catalog</h4>
+            <button class="close-catalog" id="closeCatalog">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="catalog-list" id="catalogList">
+            <!-- Categories will be loaded dynamically -->
+        </ul>
+        <!-- NEW: All Catalog Button -->
+        <button class="all-catalog-btn" id="allCatalogBtn">
+            <i class="fas fa-list"></i> All Catalog
+        </button>
+        <!-- NEW: Catalog Full List -->
+        <div class="catalog-full-list" id="catalogFullList">
+            <!-- Full catalog will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <h4>Scorpiora</h4>
+            <button class="close-menu" id="closeMenu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul>
+            <li><a href="#" class="mobile-nav-link" data-page="home"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#" class="mobile-nav-link" data-page="products"><i class="fas fa-glass"></i> Our Products</a></li>
+            <li><a href="#" class="mobile-nav-link" data-page="guest-house"><i class="fas fa-bed"></i> Guest House</a></li>
+                   <li><a href="#" class="mobile-nav-link" data-page="booking"><i class="fas fa-calendar-alt"></i> Bookings</a></li>
+            <li><a href="#" class="mobile-nav-link" data-page="order-status"><i class="fas fa-truck"></i> Order Status</a></li>
+            <li><a href="#" class="mobile-nav-link" data-page="points"><i class="fas fa-coins"></i> Redeem Points</a></li>
+            <li><a href="#" class="mobile-nav-link" data-page="location"><i class="fas fa-map-marker-alt"></i> Location</a></li>
+            <!-- Dynamic categories will be added here -->
+            <div id="mobileDynamicCategories"></div>
+        </ul>
+    </div>
+
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="overlay"></div>
+
+    <main class="container" id="mainContent">
+        <!-- Content will be dynamically loaded here -->
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-sections">
+               
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="https://www.instagram.com/scorpiora_cs?igsh=MXBjem9zN3diaXF0ag=="><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; <span id="currentYear"></span> Scorpiora. All rights reserved.</p>
+                <div class="developer-credit">
+                    Developed by <a href="#" target="_blank">sym.codermv</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAWZhhfPQYjYWgRizSlC8CgXmw7p-etF_k",
+            authDomain: "testfile-d4e33.firebaseapp.com",
+            projectId: "testfile-d4e33",
+            storageBucket: "testfile-d4e33.firebasestorage.app",
+            messagingSenderId: "506950055235",
+            appId: "1:506950055235:web:3b4777aa5f63771ad0ebf6",
+            measurementId: "G-HYRNNJ4YRQ"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // App state
+        let state = {
+            cart: JSON.parse(localStorage.getItem('cart')) || {},
+            currentPage: 'home',
+            currentCategory: null,
+            currentSearch: '',
+            currentProduct: null,
+            orderDetails: null,
+            paymentMethod: null,
+            uploadedFile: null,
+            products: [],
+            smoothies: [],
+            discountPercentage: 0,
+            categories: ["Fresh Juices", "Smoothies", "Detox Cleanses", "Boosters", "Wellness Shots"],
+            catalogName: "Fresh Juice Bar",
+            freeShippingThreshold: 100, // Free shipping threshold in MVR
+            shippingCost: 5.99, // Standard shipping cost
+            bookingType: null,
+            bookingDetails: null,
+            pointsProducts: [
+                {
+                    id: 'points-100',
+                    name: '100 Points Reward',
+                    points: 100,
+                    description: 'Get any product under MVR 100 for free',
+                    image: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+                    maxValue: 100,
+                    backgroundImage: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60'
+                },
+                {
+                    id: 'points-270',
+                    name: '270 Points Reward',
+                    points: 270,
+                    description: 'Get any product under MVR 270 for free',
+                    image: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+                    maxValue: 270,
+                    backgroundImage: 'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60'
+                },
+                {
+                    id: 'points-500',
+                    name: '500 Points Reward',
+                    points: 500,
+                    description: 'Get any product under MVR 500 for free',
+                    image: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+                    maxValue: 500,
+                    backgroundImage: 'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60'
+                },
+                {
+                    id: 'points-karaoke',
+                    name: 'Karaoke Session',
+                    points: 800,
+                    description: 'Free 2-hour karaoke session',
+                    image: 'https://cdn-icons-png.flaticon.com/512/2990/2990682.png',
+                    bookingType: 'karaoke',
+                    backgroundImage: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60'
+                },
+                {
+                    id: 'points-party',
+                    name: 'Small Party Package',
+                    points: 1500,
+                    description: 'Free small party package for up to 10 people',
+                    image: 'https://cdn-icons-png.flaticon.com/512/3296/3296414.png',
+                    bookingType: 'small-party',
+                    backgroundImage: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60'
+                }
+            ],
+            customerPoints: 0,
+            customerPhone: localStorage.getItem('customerPhone') || '',
+            welcomeBonusShown: localStorage.getItem('welcomeBonusShown') === 'true',
+            guestHouseImages: [
+                'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80',
+                'https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80',
+                'https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80'
+            ],
+            guestHousePointsProducts: [
+                {
+                    id: 'points-100',
+                    name: '100 Points Reward',
+                    points: 100,
+                    description: 'Get 10% discount on your booking',
+                    image: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+                    discount: 10,
+                    backgroundImage: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60'
+                },
+                {
+                    id: 'points-270',
+                    name: '270 Points Reward',
+                    points: 270,
+                    description: 'Get 25% discount on your booking',
+                    image: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+                    discount: 25,
+                    backgroundImage: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60'
+                },
+                {
+                    id: 'points-500',
+                    name: '500 Points Reward',
+                    points: 500,
+                    description: 'Get 50% discount on your booking',
+                    image: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+                    discount: 50,
+                    backgroundImage: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60'
+                }
+            ],
+            pointsRedemption: false,
+            pointsRedemptionProduct: null,
+            selectedBookingDate: null,
+            selectedTimeSlot: null,
+            guestHouseAvailability: {}
+        };
+
+        // DOM elements
+        const mainContent = document.getElementById('mainContent');
+        const cartCount = document.getElementById('cartCount');
+        const cartLink = document.getElementById('cartLink');
+        const pointsLink = document.getElementById('pointsLink');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        const currentYear = document.getElementById('currentYear');
+        const splashScreen = document.getElementById('splash-screen');
+        const adminLink = document.getElementById('adminLink');
+        const mobileDynamicCategories = document.getElementById('mobileDynamicCategories');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        const closeMenu = document.getElementById('closeMenu');
+        const overlay = document.getElementById('overlay');
+        const catalogBtn = document.getElementById('catalogBtn');
+        const catalogMenu = document.getElementById('catalogMenu');
+        const closeCatalog = document.getElementById('closeCatalog');
+        const catalogList = document.getElementById('catalogList');
+        const productModal = document.getElementById('productModal');
+        const modalContent = document.getElementById('modalContent');
+        const closeModal = document.getElementById('closeModal');
+        const copyNotification = document.getElementById('copyNotification');
+        const allCatalogBtn = document.getElementById('allCatalogBtn');
+        const catalogFullList = document.getElementById('catalogFullList');
+        const welcomeModal = document.getElementById('welcomeModal');
+        const welcomePhone = document.getElementById('welcomePhone');
+        const registerBtn = document.getElementById('registerBtn');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const skipRegisterBtn = document.getElementById('skipRegisterBtn');
+        const closeWelcomeModal = document.getElementById('closeWelcomeModal');
+
+        // Initialize the app
+        function init() {
+            // Set current year in footer
+            currentYear.textContent = new Date().getFullYear();
+
+            // Hide splash screen after 3 seconds
+            setTimeout(() => {
+                splashScreen.style.opacity = '0';
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                    loadCatalogName();
+                    loadCategories();
+                    loadProducts();
+                    loadSmoothies();
+                    loadDiscount();
+                    loadShippingSettings();
+                    loadGuestHouseAvailability();
+                    
+                    // Show welcome bonus modal if not shown before
+                    if (!state.welcomeBonusShown && !state.customerPhone) {
+                        setTimeout(() => {
+                            welcomeModal.classList.add('active');
+                        }, 1000);
+                    } else if (state.customerPhone) {
+                        // If customer phone is already saved, check their points
+                        checkCustomerPoints(state.customerPhone);
+                    }
+                }, 500);
+            }, 3000);
+
+            // Add event listeners for navigation
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = link.dataset.page;
+                    const category = link.dataset.category;
+                    
+                    if (category) {
+                        state.currentCategory = category;
+                        state.currentSearch = '';
+                    }
+                    
+                    loadPage(page);
+                });
+            });
+
+            // Add event listeners for mobile navigation
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = link.dataset.page;
+                    const category = link.dataset.category;
+                    
+                    if (category) {
+                        state.currentCategory = category;
+                        state.currentSearch = '';
+                    }
+                    
+                    loadPage(page);
+                    closeMobileMenu();
+                });
+            });
+
+            cartLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                loadPage('cart');
+                closeMobileMenu();
+            });
+
+            pointsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                loadPage('points');
+                closeMobileMenu();
+            });
+
+            adminLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Admin link now goes to admin.html
+            });
+
+            // Mobile menu functionality
+            mobileMenuBtn.addEventListener('click', openMobileMenu);
+            closeMenu.addEventListener('click', closeMobileMenu);
+            overlay.addEventListener('click', closeMobileMenu);
+
+            // Catalog menu functionality
+            catalogBtn.addEventListener('click', openCatalogMenu);
+            closeCatalog.addEventListener('click', closeCatalogMenu);
+            overlay.addEventListener('click', closeCatalogMenu);
+            
+            // All Catalog button functionality
+            allCatalogBtn.addEventListener('click', toggleFullCatalog);
+            
+            // Modal functionality
+            closeModal.addEventListener('click', closeProductModal);
+            productModal.addEventListener('click', (e) => {
+                if (e.target === productModal) {
+                    closeProductModal();
+                }
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeProductModal();
+                    closeWelcomeModalFunc();
+                }
+            });
+            
+            // Welcome bonus registration
+            registerBtn.addEventListener('click', registerForWelcomeBonus);
+            skipRegisterBtn.addEventListener('click', skipRegistration);
+            closeWelcomeModal.addEventListener('click', closeWelcomeModalFunc);
+            
+            // Initialize cart count
+            updateCartCount();
+        }
+
+        // Load guest house availability
+        function loadGuestHouseAvailability() {
+            database.ref('guestHouseAvailability').on('value', (snapshot) => {
+                const availabilityData = snapshot.val();
+                if (availabilityData) {
+                    state.guestHouseAvailability = availabilityData;
+                }
+            });
+        }
+
+        // Check if a date is available
+        function isDateAvailable(date) {
+            const dateString = date.toISOString().split('T')[0];
+            return !state.guestHouseAvailability[dateString] || 
+                   state.guestHouseAvailability[dateString].available;
+        }
+
+        // Check if a time slot is available
+        function isTimeSlotAvailable(date, timeSlot) {
+            const dateString = date.toISOString().split('T')[0];
+            if (!state.guestHouseAvailability[dateString]) return true;
+            
+            const bookedSlots = state.guestHouseAvailability[dateString].bookedSlots || [];
+            return !bookedSlots.includes(timeSlot);
+        }
+
+        // Close welcome modal
+        function closeWelcomeModalFunc() {
+            welcomeModal.classList.remove('active');
+            state.welcomeBonusShown = true;
+            localStorage.setItem('welcomeBonusShown', 'true');
+        }
+
+        // Skip registration
+        function skipRegistration() {
+            closeWelcomeModalFunc();
+            loadPage('home');
+        }
+
+        // Register for welcome bonus
+        function registerForWelcomeBonus() {
+            const phone = welcomePhone.value.trim();
+            
+            if (!phone) {
+                alert('Please enter your phone number');
+                return;
+            }
+            
+            // Check if phone number already exists
+            database.ref('customerPoints').orderByChild('phone').equalTo(phone).once('value')
+                .then(snapshot => {
+                    if (snapshot.exists()) {
+                        alert('This phone number is already registered.');
+                        return;
+                    }
+                    
+                    // Add new customer with 100 points
+                    database.ref('customerPoints').push({
+                        phone: phone,
+                        points: 100,
+                        firstOrder: new Date().toISOString(),
+                        welcomeBonus: true
+                    }).then(() => {
+                        welcomeMessage.style.display = 'block';
+                        state.welcomeBonusShown = true;
+                        state.customerPhone = phone;
+                        localStorage.setItem('welcomeBonusShown', 'true');
+                        localStorage.setItem('customerPhone', phone);
+                        
+                        setTimeout(() => {
+                            welcomeModal.classList.remove('active');
+                            loadPage('home');
+                        }, 2000);
+                    });
+                })
+                .catch(error => {
+                    alert('Error registering: ' + error.message);
+                });
+        }
+
+        // Toggle full catalog view
+        function toggleFullCatalog() {
+            catalogFullList.classList.toggle('active');
+            if (catalogFullList.classList.contains('active')) {
+                loadFullCatalog();
+                allCatalogBtn.innerHTML = '<i class="fas fa-chevron-up"></i> Hide Catalog';
+            } else {
+                allCatalogBtn.innerHTML = '<i class="fas fa-list"></i> All Catalog';
+            }
+        }
+
+        // Load full catalog with all products
+        function loadFullCatalog() {
+            if (state.products.length === 0) return;
+            
+            let catalogHTML = '<ul>';
+            
+            // Group products by category
+            const productsByCategory = {};
+            state.products.forEach(product => {
+                if (!productsByCategory[product.category]) {
+                    productsByCategory[product.category] = [];
+                }
+                productsByCategory[product.category].push(product);
+            });
+            
+            // Generate HTML for each category and its products
+            Object.keys(productsByCategory).forEach(category => {
+                catalogHTML += `<li><strong>${category}</strong></li>`;
+                productsByCategory[category].forEach(product => {
+                    catalogHTML += `
+                        <li>
+                            <a href="#" class="catalog-product-link" data-id="${product.id}">
+                                <i class="fas fa-arrow-right"></i> ${product.name} - MVR ${product.price.toFixed(2)}
+                            </a>
+                        </li>
+                    `;
+                });
+            });
+            
+            catalogHTML += '</ul>';
+            catalogFullList.innerHTML = catalogHTML;
+            
+            // Add event listeners to product links
+            document.querySelectorAll('.catalog-product-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const productId = link.dataset.id;
+                    viewProductDetail(productId);
+                    closeCatalogMenu();
+                });
+            });
+        }
+
+        // Open product modal
+        function openProductModal(content) {
+            modalContent.innerHTML = content;
+            productModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close product modal
+        function closeProductModal() {
+            productModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Open catalog menu
+        function openCatalogMenu() {
+            catalogMenu.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close catalog menu
+        function closeCatalogMenu() {
+            catalogMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            catalogFullList.classList.remove('active');
+            allCatalogBtn.innerHTML = '<i class="fas fa-list"></i> All Catalog';
+        }
+
+        // Open mobile menu
+        function openMobileMenu() {
+            mobileNav.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close mobile menu
+        function closeMobileMenu() {
+            mobileNav.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Load shipping settings from Firebase
+        function loadShippingSettings() {
+            database.ref('shippingSettings').on('value', (snapshot) => {
+                const settings = snapshot.val();
+                if (settings) {
+                    state.freeShippingThreshold = settings.freeShippingThreshold || 100;
+                    state.shippingCost = settings.shippingCost || 5.99;
+                }
+            });
+        }
+
+        // Calculate shipping cost based on order total
+        function calculateShipping(subtotal) {
+            if (subtotal >= state.freeShippingThreshold) {
+                return 0;
+            }
+            return state.shippingCost;
+        }
+
+        // Load catalog name from Firebase
+        function loadCatalogName() {
+            database.ref('catalogName').on('value', (snapshot) => {
+                const name = snapshot.val();
+                if (name) {
+                    state.catalogName = name;
+                }
+            });
+        }
+
+        // Load categories from Firebase
+        function loadCategories() {
+            database.ref('categories').on('value', (snapshot) => {
+                const categoriesData = snapshot.val();
+                if (categoriesData) {
+                    state.categories = Object.values(categoriesData);
+                    renderCategories();
+                    renderCatalogMenu();
+                }
+            });
+        }
+
+        // Render categories in navigation
+        function renderCategories() {
+            if (state.categories.length > 0) {
+                let mobileCategoriesHTML = '';
+                
+                state.categories.forEach(category => {
+                    mobileCategoriesHTML += `
+                        <li><a href="#" class="mobile-nav-link" data-page="products" data-category="${category}">
+                            <i class="fas fa-${getCategoryIcon(category)}"></i> ${category}
+                        </a></li>
+                    `;
+                });
+                
+                mobileDynamicCategories.innerHTML = mobileCategoriesHTML;
+                
+                // Add event listeners to mobile category links
+                document.querySelectorAll('#mobileDynamicCategories .mobile-nav-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        state.currentCategory = link.dataset.category;
+                        state.currentSearch = '';
+                        loadPage('products');
+                        closeMobileMenu();
+                    });
+                });
+            }
+        }
+
+        // Render catalog menu
+        function renderCatalogMenu() {
+            if (state.categories.length > 0) {
+                let catalogHTML = '';
+                
+                state.categories.forEach(category => {
+                    catalogHTML += `
+                        <li><a href="#" class="catalog-link" data-page="products" data-category="${category}">
+                            <i class="fas fa-${getCategoryIcon(category)}"></i> ${category}
+                        </a></li>
+                    `;
+                });
+                
+                catalogList.innerHTML = catalogHTML;
+                
+                // Add event listeners to catalog links
+                document.querySelectorAll('.catalog-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        state.currentCategory = link.dataset.category;
+                        state.currentSearch = '';
+                        loadPage('products');
+                        closeCatalogMenu();
+                    });
+                });
+            }
+        }
+
+        // Get appropriate icon for category
+        function getCategoryIcon(category) {
+            const categoryIcons = {
+                'Fresh Juices': 'glass',
+                'Smoothies': 'blender',
+                'Detox Cleanses': 'leaf',
+                'Boosters': 'bolt',
+                'Wellness Shots': 'heart'
+            };
+            
+            return categoryIcons[category] || 'tag';
+        }
+
+        // Load smoothies from Firebase
+        function loadSmoothies() {
+            database.ref('smoothies').on('value', (snapshot) => {
+                const smoothiesData = snapshot.val();
+                if (smoothiesData) {
+                    // Convert object to array
+                    state.smoothies = Object.keys(smoothiesData).map(key => {
+                        return { id: key, ...smoothiesData[key] };
+                    });
+                    
+                    // If no smoothies in Firebase, add some sample smoothies
+                    if (state.smoothies.length === 0) {
+                        addSampleSmoothies();
+                    }
+                } else {
+                    // If no smoothies node exists, add sample smoothies
+                    addSampleSmoothies();
+                }
+            });
+        }
+
+        // Add sample smoothies to Firebase
+        function addSampleSmoothies() {
+            const sampleSmoothies = [
+                {
+                    name: 'Green Detox Smoothie',
+                    price: 139,
+                    original_price: 159,
+                    description: 'Packed with nutrient-rich greens and fruits to help cleanse your system and boost your energy',
+                    image: 'https://healthylivingpc.com/wp-content/uploads/2024/06/Green-Detox-Smoothie-500x375.jpg',
+                    category: 'Smoothies',
+                    featured: true
+                },
+                {
+                    name: 'Tropical Paradise',
+                    price: 129,
+                    original_price: 149,
+                    description: 'Escape to a Tropical Paradise with this delicious blend of mango, pineapple, coconut milk, and passion fruit',
+                    image: 'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+                    category: 'Smoothies',
+                    featured: true
+                }
+            ];
+
+            // Add each smoothie to Firebase
+            sampleSmoothies.forEach(smoothie => {
+                database.ref('smoothies').push(smoothie);
+            });
+        }
+
+        // Load products from Firebase
+        function loadProducts() {
+            database.ref('products').on('value', (snapshot) => {
+                const productsData = snapshot.val();
+                if (productsData) {
+                    // Convert object to array
+                    state.products = Object.keys(productsData).map(key => {
+                        return { id: key, ...productsData[key] };
+                    });
+                    
+                    // If no products in Firebase, add some sample products
+                    if (state.products.length === 0) {
+                        addSampleProducts();
+                    } else {
+                        if (state.currentPage) {
+                            loadPage(state.currentPage);
+                        }
+                    }
+                } else {
+                    // If no products node exists, add sample products
+                    addSampleProducts();
+                }
+            });
+        }
+
+        // Add sample products to Firebase
+        function addSampleProducts() {
+            const sampleProducts = [
+                {
+                    name: 'Citrus Blast',
+                    price: 119,
+                    original_price: 129,
+                    image: 'https://i.pinimg.com/736x/fd/0b/34/fd0b347a94a16150a88f9f457969cf34.jpg',
+                    description: 'Refreshing blend of orange, grapefruit, and lemon with a hint of turmeric',
+                    category: 'Fresh Juices',
+                    featured: true
+                },
+                {
+                    name: 'Berry Antioxidant',
+                    price: 149,
+                    original_price: 169,
+                    image: 'https://images.unsplash.com/photo-1623844889320-6f04dacf3cc4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+                    description: 'Packed with mixed berries, banana, Greek yogurt, and honey',
+                    category: 'Smoothies',
+                    featured: true
+                },
+                {
+                    name: 'Ginger Shot',
+                    price: 49,
+                    original_price: 59,
+                    image: 'https://images.unsplash.com/photo-1598034791475-787a8c4a61a8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+                    description: 'Powerful immune-boosting shot with fresh ginger, lemon, and a hint of turmeric',
+                    category: 'Wellness Shots',
+                    featured: true
+                },
+                {
+                    name: 'Green Cleanse',
+                    price: 159,
+                    original_price: 179,
+                    image: 'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+                    description: 'Deep cleansing juice with kale, cucumber, celery, green apple, and lemon',
+                    category: 'Detox Cleanses',
+                    featured: true
+                },
+                {
+                    name: 'Protein Power',
+                    price: 159,
+                    original_price: 179,
+                    image: 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwa90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+                    description: 'Fuel your body with banana, peanut butter, protein powder, and almond milk',
+                    category: 'Smoothies',
+                    featured: false
+                },
+                {
+                    name: 'Immunity Booster',
+                    price: 89,
+                    original_price: 99,
+                    image: 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+                    description: 'Vitamin C packed shot with orange, lemon, ginger, and echinacea',
+                    category: 'Boosters',
+                    featured: false
+                }
+            ];
+
+            // Add each product to Firebase
+            sampleProducts.forEach(product => {
+                database.ref('products').push(product);
+            });
+        }
+
+        // Load discount percentage from Firebase
+        function loadDiscount() {
+            database.ref('discount').on('value', (snapshot) => {
+                const discountData = snapshot.val();
+                state.discountPercentage = discountData?.percentage || 0;
+                
+                if (state.currentPage === 'home') {
+                    loadPage('home');
+                }
+            });
+        }
+
+        // Load a page based on state
+        function loadPage(page) {
+            state.currentPage = page;
+            
+            switch(page) {
+                case 'home':
+                    renderHomePage();
+                    break;
+                case 'products':
+                    renderProductsPage();
+                    break;
+                case 'product':
+                    renderProductDetailPage();
+                    break;
+                case 'smoothies':
+                    renderSmoothiesPage();
+                    break;
+                case 'smoothie-detail':
+                    renderSmoothieDetailPage();
+                    break;
+                case 'cart':
+                    renderCartPage();
+                    break;
+                case 'checkout':
+                    renderCheckoutPage();
+                    break;
+                case 'guest-house':
+                    renderGuestHousePage();
+                    break;
+                case 'booking':
+                    renderBookingPage();
+                    break;
+                case 'order-status':
+                    renderOrderStatusPage();
+                    break;
+                case 'points':
+                    renderPointsPage();
+                    break;
+                case 'location':
+                    renderLocationPage();
+                    break;
+                case 'pending-review':
+                    renderPendingReviewPage();
+                    break;
+                case 'order-confirmation':
+                    renderOrderConfirmationPage();
+                    break;
+                case 'points-checkout':
+                    renderPointsCheckoutPage();
+                    break;
+                case 'points-booking':
+                    renderPointsBookingPage();
+                    break;
+                case 'redemption-confirmation':
+                    renderRedemptionConfirmationPage();
+                    break;
+                case 'booking-confirmation':
+                    renderBookingConfirmationPage();
+                    break;
+                default:
+                    renderHomePage();
+            }
+            
+            // Update active nav link
+            updateActiveNavLink();
+            
+            // Scroll to top when page changes
+            window.scrollTo(0, 0);
+            
+            // Close mobile menu if open
+            closeMobileMenu();
+        }
+
+        // Apply discount to price
+        function applyDiscount(price) {
+            if (state.discountPercentage > 0) {
+                return price * (1 - state.discountPercentage / 100);
+            }
+            return price;
+        }
+
+        // Render home page with enhanced banner slideshow
+        function renderHomePage() {
+            const featuredProducts = state.products.filter(product => product.featured);
+            
+            mainContent.innerHTML = `
+                <section class="banner">
+                    <div class="slideshow">
+                        <!-- Slide 1 -->
+                        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1613478223719-2ab802602423?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80')">
+                            <div class="banner-content">
+                                <div class="banner-text">
+                                    <h2>Fresh Juice Bar!</h2>
+                                    <p>Up to ${state.discountPercentage}% off selected items</p>
+                                    <a href="#" class="btn" id="saleBtn">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Slide 2 -->
+                        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80')">
+                            <div class="banner-content">
+                                <div class="banner-text">
+                                    <h2>New Arrivals</h2>
+                                    <p>Discover our latest juices and smoothies</p>
+                                    <a href="#" class="btn" id="newArrivalsBtn">Explore</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Slide 3 -->
+                        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1600353068440-6361ef3a86e8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80')">
+                            <div class="banner-content">
+                                <div class="banner-text">
+                                    <h2>Free Delivery</h2>
+                                    <p>On all orders over MVR${state.freeShippingThreshold}</p>
+                                    <a href="#" class="btn" id="shippingBtn">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="categories">
+                    <h2>Shop by Category</h2>
+                    <div class="category-grid">
+                        ${state.categories.length > 0 ? 
+                            state.categories.map(category => `
+                                <div class="category-item" data-page="products" data-category="${category}">
+                                    <img src="${getCategoryImage(category)}" alt="${category}">
+                                    <div class="category-overlay">
+                                        <div class="category-title">${category}</div>
+                                    </div>
+                                    <h3>${category}</h3>
+                                </div>
+                            `).join('') :
+                            '<p>No categories available</p>'
+                        }
+                    </div>
+                </section>
+
+                <section class="featured-products">
+                    <h2>Featured Products</h2>
+                    <div class="product-grid">
+                        ${featuredProducts.length > 0 ? 
+                            featuredProducts.map(product => {
+                                const discountedPrice = applyDiscount(product.price);
+                                return `
+                                <div class="product-card" data-id="${product.id}">
+                                    <img src="${product.image}" alt="${product.name}">
+                                    <div class="product-overlay">
+                                        <div class="product-actions-overlay">
+                                            <button class="btn add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
+                                        </div>
+                                    </div>
+                                    <h3>${product.name}</h3>
+                                    <div class="price">
+                                        <span class="current-price">MVR${discountedPrice.toFixed(2)}</span>
+                                        ${state.discountPercentage > 0 ? 
+                                            `<span class="original-price">MVR${product.price.toFixed(2)}</span>` : ''}
+                                    </div>
+                                </div>
+                                `;
+                            }).join('') :
+                            '<p>No featured products available.</p>'
+                        }
+                    </div>
+                </section>
+
+                <section style="text-align: center; padding: 40px 20px; margin-top: 40px;">
+                    <h2>Scorpiora Guest House</h2>
+                    <p style="max-width: 800px; margin: 0 auto 30px; font-size: 18px;">
+                        Experience the perfect blend of comfort and convenience at our beautifully appointed guest house. 
+                        Whether you're visiting for business or leisure, we provide exceptional service and amenities to make your stay memorable.
+                    </p>
+                    <a href="#" class="btn" id="guestHouseBtn">Explore Guest House</a>
+                </section>
+            `;
+            
+            // Initialize slideshow
+            initSlideshow();
+            
+            // Add event listeners to dynamically created elements
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    state.currentCategory = item.dataset.category;
+                    state.currentSearch = '';
+                    loadPage('products');
+                });
+            });
+            
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('add-to-cart-btn')) {
+                        const productId = card.dataset.id;
+                        viewProductDetail(productId);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const productId = btn.dataset.id;
+                    addToCart(productId);
+                    alert('Product added to cart!');
+                });
+            });
+            
+            document.getElementById('saleBtn')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                state.currentCategory = null;
+                state.currentSearch = '';
+                loadPage('products');
+            });
+            
+            document.getElementById('newArrivalsBtn')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                state.currentCategory = 'Fresh Juices';
+                state.currentSearch = '';
+                loadPage('products');
+            });
+            
+            document.getElementById('shippingBtn')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert(`Free delivery applies to all orders over MVR${state.freeShippingThreshold}. No code needed!`);
+            });
+            
+            document.getElementById('guestHouseBtn')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                loadPage('guest-house');
+            });
+        }
+
+        // Render smoothies page
+        function renderSmoothiesPage() {
+            mainContent.innerHTML = `
+                <h1>Smoothies</h1>
+                <p style="margin-bottom: 15px;">Browse our selection of delicious and nutritious smoothies</p>
+                
+                <div class="product-grid">
+                    ${state.smoothies.length > 0 ? 
+                        state.smoothies.map(smoothie => {
+                            const discountedPrice = applyDiscount(smoothie.price);
+                            return `
+                            <div class="product-card" data-id="${smoothie.id}">
+                                <img src="${smoothie.image}" alt="${smoothie.name}">
+                                <div class="product-overlay">
+                                    <div class="product-actions-overlay">
+                                        <button class="btn quick-add-btn" data-id="${smoothie.id}">Add to Cart</button>
+                                    </div>
+                                </div>
+                                <h3>${smoothie.name}</h3>
+                                <div class="price">
+                                    <span class="current-price">MVR${discountedPrice.toFixed(2)}</span>
+                                    ${state.discountPercentage > 0 ? 
+                                        `<span class="original-price">MVR${smoothie.price.toFixed(2)}</span>` : ''}
+                                </div>
+                            </div>
+                            `;
+                        }).join('') :
+                        '<p>No smoothies available.</p>'
+                    }
+                </div>
+            `;
+            
+            // Add event listeners
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('quick-add-btn')) {
+                        const smoothieId = card.dataset.id;
+                        viewSmoothieDetail(smoothieId);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.quick-add-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const smoothieId = btn.dataset.id;
+                    const smoothie = state.smoothies.find(s => s.id === smoothieId);
+                    if (smoothie) {
+                        addToCart(smoothieId);
+                        alert(`${smoothie.name} added to cart!`);
+                    }
+                });
+            });
+        }
+
+        // View smoothie detail
+        function viewSmoothieDetail(smoothieId) {
+            const smoothie = state.smoothies.find(s => s.id === smoothieId);
+            if (!smoothie) return;
+            
+            state.currentProduct = smoothie;
+            loadPage('smoothie-detail');
+        }
+
+        // Render smoothie detail page
+        function renderSmoothieDetailPage() {
+            if (!state.currentProduct) {
+                loadPage('smoothies');
+                return;
+            }
+            
+            const smoothie = state.currentProduct;
+            const discountedPrice = applyDiscount(smoothie.price);
+            
+            mainContent.innerHTML = `
+                <div class="product-detail">
+                    <div class="product-image">
+                        <button class="close-detail" id="closeDetail">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <img src="${smoothie.image}" alt="${smoothie.name}">
+                    </div>
+                    <div class="product-info">
+                        <h1>${smoothie.name}</h1>
+                        <div class="product-price">
+                            MVR${discountedPrice.toFixed(2)}
+                            ${state.discountPercentage > 0 ? 
+                                `<span class="original-price">MVR${smoothie.price.toFixed(2)}</span>` : ''}
+                        </div>
+                        
+                        <div class="product-description">
+                            <p>${smoothie.description}</p>
+                        </div>
+                        
+                        <form id="addToCartForm">
+                            <div class="quantity-selector">
+                                <label for="quantity">Quantity:</label>
+                                <input type="number" name="quantity" id="quantity" value="1" min="1">
+                            </div>
+                            <button type="submit" class="btn">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('closeDetail').addEventListener('click', () => {
+                loadPage('smoothies');
+            });
+            
+            document.getElementById('addToCartForm')?.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const quantity = parseInt(document.getElementById('quantity').value) || 1;
+                addToCart(smoothie.id, quantity);
+                alert(`${smoothie.name} has been added to your cart!`);
+            });
+        }
+
+        // Get appropriate image for category
+        function getCategoryImage(category) {
+            // Default placeholder image
+            let image = 'https://via.placeholder.com/300x200?text=' + category;
+            
+            // Map specific categories to their images
+            const categoryImages = {
+                'Fresh Juices': 'https://images.unsplash.com/photo-1613478223719-2ab802602423?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60',
+                'Smoothies': 'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto-format&fit=crop&w=500&q=60',
+                'Detox Cleanses': 'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60',
+                'Boosters': 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60',
+                'Wellness Shots': 'https://images.unsplash.com/photo-1598034791475-787a8c4a61a8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60'
+            };
+            
+            if (categoryImages[category]) {
+                image = categoryImages[category];
+            }
+            
+            return image;
+        }
+
+        // Initialize slideshow
+        function initSlideshow() {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+            
+            function nextSlide() {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }
+            
+            // Change slide every 5 seconds
+            setInterval(nextSlide, 5000);
+        }
+
+        // Render products page
+        function renderProductsPage() {
+            let filteredProducts = [...state.products];
+            
+            if (state.currentCategory) {
+                filteredProducts = filteredProducts.filter(
+                    product => product.category === state.currentCategory
+                );
+            }
+            
+            if (state.currentSearch) {
+                const searchTerm = state.currentSearch.toLowerCase();
+                filteredProducts = filteredProducts.filter(
+                    product => product.name.toLowerCase().includes(searchTerm) || 
+                               (product.description && product.description.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            mainContent.innerHTML = `
+                <h1>${state.currentCategory ? state.currentCategory : 'Our Products'}</h1>
+
+                <div class="product-listing">
+                    <div class="product-grid">
+                        ${filteredProducts.length > 0 ? 
+                            filteredProducts.map(product => {
+                                const discountedPrice = applyDiscount(product.price);
+                                return `
+                                <div class="product-card" data-id="${product.id}">
+                                    <img src="${product.image}" alt="${product.name}">
+                                    <div class="product-overlay">
+                                        <div class="product-actions-overlay">
+                                            <button class="btn add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
+                                        </div>
+                                </div>
+                                    <h3>${product.name}</h3>
+                                    <div class="price">
+                                        <span class="current-price">MVR${discountedPrice.toFixed(2)}</span>
+                                        ${state.discountPercentage > 0 ? 
+                                            `<span class="original-price">MVR${product.price.toFixed(2)}</span>` : ''}
+                                    </div>
+                                </div>
+                                `;
+                            }).join('') :
+                            '<p>No products found matching your criteria.</p>'
+                        }
+                    </div>
+                </div>
+            `;
+            
+            // Add event listeners
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('add-to-cart-btn')) {
+                        const productId = card.dataset.id;
+                        viewProductDetail(productId);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const productId = btn.dataset.id;
+                    addToCart(productId);
+                    alert('Product added to cart!');
+                });
+            });
+        }
+
+        // View product detail
+        function viewProductDetail(productId) {
+            const product = state.products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const discountedPrice = applyDiscount(product.price);
+            
+            const modalHTML = `
+                <div class="product-detail">
+                    <div class="product-image">
+                        <button class="close-detail" id="closeDetailModal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <img src="${product.image}" alt="${product.name}">
+                    </div>
+                    <div class="product-info">
+                        <h1>${product.name}</h1>
+                        <div class="product-price">
+                            MVR${discountedPrice.toFixed(2)}
+                            ${state.discountPercentage > 0 ? 
+                                `<span class="original-price">MVR${product.price.toFixed(2)}</span>` : ''}
+                        </div>
+                        <div class="product-description">
+                            <p>${product.description}</p>
+                        </div>
+                        
+                        <form id="addToCartForm">
+                            <div class="quantity-selector">
+                                <label for="quantity">Quantity:</label>
+                                <input type="number" name="quantity" id="quantity" value="1" min="1">
+                            </div>
+                            <button type="submit" class="btn">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+            
+            openProductModal(modalHTML);
+            
+            document.getElementById('closeDetailModal').addEventListener('click', () => {
+                closeProductModal();
+            });
+            
+            document.getElementById('addToCartForm')?.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const quantity = parseInt(document.getElementById('quantity').value) || 1;
+                addToCart(product.id, quantity);
+                alert(`${product.name} has been added to your cart!`);
+                closeProductModal();
+            });
+        }
+
+        // Render cart page
+        function renderCartPage() {
+            const cartItems = Object.entries(state.cart)
+                .map(([id, quantity]) => {
+                    // Check if it's a smoothie first
+                    const smoothie = state.smoothies.find(s => s.id === id);
+                    if (smoothie) {
+                        return {
+                            product: smoothie,
+                            quantity,
+                            isSmoothie: true
+                        };
+                    }
+                    
+                    // Otherwise check regular products
+                    const product = state.products.find(p => p.id === id);
+                    if (!product) return null;
+                    
+                    return {
+                        product,
+                        quantity,
+                        isSmoothie: false
+                    };
+                })
+                .filter(item => item !== null);
+            
+            const subtotal = cartItems.reduce((sum, item) => 
+                sum + (item.product.price * item.quantity), 0);
+            
+            const shipping = calculateShipping(subtotal);
+            const total = subtotal + shipping;
+            
+            mainContent.innerHTML = `
+                <h1>Your Shopping Cart</h1>
+                <p style="margin-bottom: 15px;">Total items: ${Object.values(state.cart).reduce((a, b) => a + b, 0)}</p>
+                
+                <div class="cart-items">
+                    ${cartItems.length > 0 ? 
+                        cartItems.map(item => `
+                            <div class="cart-item">
+                                <img src="${item.product.image}" 
+                                     alt="${item.product.name}" class="cart-item-image">
+                                <div class="cart-item-details">
+                                    <h3>${item.product.name}</h3>
+                                    <div class="cart-item-price">
+                                        MVR${item.product.price.toFixed(2)} x ${item.quantity}
+                                    </div>
+                                    <div class="cart-item-quantity">
+                                        <button class="decrease-qty" data-id="${item.product.id}">-</button>
+                                        <input type="number" value="${item.quantity}" min="1" class="qty-input" data-id="${item.product.id}">
+                                        <button class="increase-qty" data-id="${item.product.id}">+</button>
+                                    </div>
+                                    <button class="btn remove-from-cart-btn" data-id="${item.product.id}">Remove</button>
+                                </div>
+                                <div>
+                                    MVR${(item.product.price * item.quantity).toFixed(2)}
+                                </div>
+                            </div>
+                        `).join('') :
+                        '<p>Your cart is empty.</p>'
+                    }
+                </div>
+                
+                ${cartItems.length > 0 ? `
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span>MVR${subtotal.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery:</span>
+                        <span>${shipping === 0 ? 'FREE' : `MVR${shipping.toFixed(2)}`}</span>
+                    </div>
+                    ${shipping === 0 ? `
+                    <div class="summary-row">
+                        <span style="color: #4CAF50; font-size: 14px;">
+                            <i class="fas fa-check-circle"></i> Free delivery applied!
+                        </span>
+                    </div>
+                    ` : `
+                    <div class="summary-row">
+                        <span style="font-size: 14px;">
+                            Spend MVR${(state.freeShippingThreshold - subtotal).toFixed(2)} more for free delivery
+                        </span>
+                    </div>
+                    `}
+                    <div class="summary-row summary-total">
+                        <span>Total:</span>
+                        <span>MVR${total.toFixed(2)}</span>
+                    </div>
+                    <button class="btn" id="checkoutBtn" style="width: 100%; margin-top: 20px;">Proceed to Checkout</button>
+                </div>
+                ` : ''}
+            `;
+            
+            // Add event listeners
+            document.querySelectorAll('.remove-from-cart-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const productId = btn.dataset.id;
+                    removeFromCart(productId);
+                });
+            });
+            
+            document.querySelectorAll('.decrease-qty').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const productId = e.target.dataset.id;
+                    const currentQty = state.cart[productId];
+                    if (currentQty > 1) {
+                        updateCartItemQty(productId, currentQty - 1);
+                    } else {
+                        removeFromCart(productId);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.increase-qty').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const productId = e.target.dataset.id;
+                    const currentQty = state.cart[productId];
+                    updateCartItemQty(productId, currentQty + 1);
+                });
+            });
+            
+            document.querySelectorAll('.qty-input').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    const productId = e.target.dataset.id;
+                    const newQty = parseInt(e.target.value) || 1;
+                    updateCartItemQty(productId, newQty);
+                });
+            });
+            
+            document.getElementById('checkoutBtn')?.addEventListener('click', () => {
+                loadPage('checkout');
+            });
+        }
+
+        // Update cart item quantity
+        function updateCartItemQty(productId, quantity) {
+            if (quantity < 1) {
+                removeFromCart(productId);
+                return;
+            }
+            
+            state.cart[productId] = quantity;
+            saveCart();
+            updateCartCount();
+            renderCartPage();
+        }
+
+        // Render checkout page - IMPROVED FORM
+        function renderCheckoutPage() {
+            const cartItems = Object.entries(state.cart)
+                .map(([id, quantity]) => {
+                    // Check if it's a smoothie first
+                    const smoothie = state.smoothies.find(s => s.id === id);
+                    if (smoothie) {
+                        return {
+                            product: smoothie,
+                            quantity,
+                            isSmoothie: true
+                        };
+                    }
+                    
+                    // Otherwise check regular products
+                    const product = state.products.find(p => p.id === id);
+                    if (!product) return null;
+                    
+                    return {
+                        product,
+                        quantity,
+                        isSmoothie: false
+                    };
+                })
+                .filter(item => item !== null);
+            
+            if (cartItems.length === 0) {
+                loadPage('cart');
+                return;
+            }
+            
+            const subtotal = cartItems.reduce((sum, item) => 
+                sum + (item.product.price * item.quantity), 0);
+            const shipping = calculateShipping(subtotal);
+            const total = subtotal + shipping;
+            
+            // Generate a random order number
+            const orderNumber = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
+            
+            // Save order details to state
+            state.orderDetails = {
+                orderNumber,
+                items: cartItems,
+                subtotal,
+                shipping,
+                total,
+                date: new Date().toLocaleDateString(),
+                status: 'pending'
+            };
+            
+            mainContent.innerHTML = `
+                <h1>Checkout</h1>
+                <p style="margin-bottom: 15px;">Total items: ${Object.values(state.cart).reduce((a, b) => a + b, 0)}</p>
+                
+                <div class="checkout-columns">
+                    <div class="form-section">
+                        <h2>Shipping Information</h2>
+                        <form id="shippingForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="fullName">Full Name *</label>
+                                    <input type="text" id="fullName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone Number *</label>
+                                    <input type="tel" id="phone" value="${state.customerPhone || ''}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Address *</label>
+                                    <input type="text" id="address" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="island">Island *</label>
+                                    <select id="island" required>
+                                        <option value="">Select Island</option>
+                                        <option>S.Hithadhoo</option>
+                                        <option>S.Maradhoo</option>
+                                        <option>S.MaradhooFeydhoo</option>
+                                        <option>S.Feydhoo</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Payment Method</h2>
+                        
+                        <div class="payment-method selected" id="bankTransferMethod">
+                            <label>
+                                <input type="radio" name="payment" value="bank_transfer" checked>
+                                Bank Transfer
+                                <img src="image.png" class="payment-logo" alt="Bank Transfer">
+                            </label>
+                            <div class="payment-method-details">
+                                <div style="margin-top: 10px;">
+                                    <div class="bank-info">
+                                        <p><strong>Bank Name:</strong> Bank Of Maldives</p>
+                                        <p><strong>Account Name:</strong> SCORPIORA</p>
+                                        <p><strong>Account Number:</strong> <span class="bank-account-number" id="accountNumber">7770000203219</span></p>
+                                        <p><strong>Reference:</strong> ${orderNumber}</p>
+                                    </div>
+                                    <p style="margin: 10px 0;">Please upload your payment slip after completing the bank transfer.</p>
+                                    
+                                    <div class="upload-area" id="uploadArea">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <p>Click to upload payment slip</p>
+                                        <p style="font-size: 12px; color: #666;">(JPEG, PNG or PDF, max 5MB)</p>
+                                        <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
+                                        <div class="file-name" id="fileName"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Order Summary</h2>
+                        ${cartItems.map(item => `
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px;">
+                                <span>${item.product.name} x ${item.quantity}</span>
+                                <span>MVR${(item.product.price * item.quantity).toFixed(2)}</span>
+                            </div>
+                        `).join('')}
+                        
+                        <div style="border-top: 1px solid #eee; margin: 10px 0; padding-top: 10px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Subtotal:</span>
+                                <span>MVR${subtotal.toFixed(2)}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Delivery:</span>
+                                <span>${shipping === 0 ? 'FREE' : `MVR${shipping.toFixed(2)}`}</span>
+                            </div>
+                            <div style="display: flex; justify-content: between; font-weight: bold; font-size: 16px;">
+                                <span>Total:</span>
+                                <span>MVR${total.toFixed(2)}</span>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-large" id="placeOrderBtn">Place Order</button>
+                    </div>
+                </div>
+            `;
+            
+            // Set payment method to bank transfer by default
+            state.paymentMethod = 'bank_transfer';
+            
+            // File upload handling
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const fileName = document.getElementById('fileName');
+            
+            uploadArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('File size exceeds 5MB limit');
+                        return;
+                    }
+                    
+                    const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+                    if (!validTypes.includes(file.type)) {
+                        alert('Please upload a JPEG, PNG, or PDF file');
+                        return;
+                    }
+                    
+                    // Read the file and convert to base64
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        fileName.textContent = file.name;
+                        state.uploadedFile = event.target.result; // Store base64 string
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Account number copy functionality
+            const accountNumber = document.getElementById('accountNumber');
+            accountNumber.addEventListener('click', () => {
+                navigator.clipboard.writeText(accountNumber.textContent)
+                    .then(() => {
+                        copyNotification.textContent = 'Account number copied to clipboard!';
+                        copyNotification.classList.add('show');
+                        setTimeout(() => {
+                            copyNotification.classList.remove('show');
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                    });
+            });
+            
+            document.getElementById('placeOrderBtn').addEventListener('click', () => {
+                if (!document.getElementById('shippingForm').checkValidity()) {
+                    alert('Please fill out all required shipping information.');
+                    return;
+                }
+                
+                if (state.paymentMethod === 'bank_transfer' && !state.uploadedFile) {
+                    alert('Please upload your payment slip for bank transfer.');
+                    return;
+                }
+                
+                // Save shipping info to order details
+                state.orderDetails.shippingInfo = {
+                    name: document.getElementById('fullName').value,
+                    address: document.getElementById('address').value,
+                    island: document.getElementById('island').value,
+                    phone: document.getElementById('phone').value
+                };
+                
+                state.orderDetails.paymentMethod = state.paymentMethod;
+                if (state.paymentMethod === 'bank_transfer') {
+                    state.orderDetails.paymentSlip = state.uploadedFile; // Store the base64 image
+                }
+                
+                // Save order to Firebase
+                database.ref('orders').push(state.orderDetails)
+                    .then(() => {
+                        // Add points for this order
+                        const phone = document.getElementById('phone').value;
+                        if (phone) {
+                            addPointsForOrder(phone, total);
+                        }
+                        
+                        // Clear cart after successful order
+                        state.cart = {};
+                        saveCart();
+                        updateCartCount();
+                        
+                        loadPage('pending-review');
+                    })
+                    .catch(error => {
+                        alert('Error placing order: ' + error.message);
+                    });
+            });
+        }
+
+        // Add points for an order
+        function addPointsForOrder(phone, orderTotal) {
+            // 1 point for every 10 MVR spent
+            const pointsEarned = Math.floor(orderTotal / 10);
+            
+            // Get current points for this phone number
+            database.ref('customerPoints').orderByChild('phone').equalTo(phone).once('value')
+                .then(snapshot => {
+                    if (snapshot.exists()) {
+                        // Update existing customer's points
+                        const customerData = Object.entries(snapshot.val())[0];
+                        const customerId = customerData[0];
+                        const currentPoints = customerData[1].points || 0;
+                        
+                        database.ref('customerPoints/' + customerId).update({
+                            points: currentPoints + pointsEarned,
+                            lastOrder: new Date().toISOString()
+                        });
+                    } else {
+                        // Create new customer points record
+                        database.ref('customerPoints').push({
+                            phone: phone,
+                            points: pointsEarned,
+                            firstOrder: new Date().toISOString(),
+                            lastOrder: new Date().toISOString()
+                        });
+                    }
+                });
+        }
+
+        // Render guest house page with calendar
+        function renderGuestHousePage() {
+            mainContent.innerHTML = `
+                <section class="guest-house-cover">
+                    <div class="guest-house-slideshow">
+                        <!-- Slide 1 -->
+                        <div class="guest-house-slide active" style="background-image: url('${state.guestHouseImages[0]}')"></div>
+                        
+                        <!-- Slide 2 -->
+                        <div class="guest-house-slide" style="background-image: url('${state.guestHouseImages[1]}')"></div>
+                        
+                        <!-- Slide 3 -->
+                        <div class="guest-house-slide" style="background-image: url('${state.guestHouseImages[2]}')"></div>
+                    </div>
+                    <div class="guest-house-overlay">
+                        <h1 class="guest-house-title">Scorpiora Guest House</h1>
+                        <p class="guest-house-subtitle">Your Home Away From Home</p>
+                    </div>
+                </section>
+
+                <div class="booking-section">
+                    <h2>Check Availability</h2>
+                    
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <h3>Select Your Dates</h3>
+                            <div>
+                                <button class="btn btn-secondary" id="prevMonthBtn"><i class="fas fa-chevron-left"></i></button>
+                                <span id="currentMonth" style="margin: 0 10px; font-weight: bold;"></span>
+                                <button class="btn btn-secondary" id="nextMonthBtn"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div class="calendar-grid" id="calendarGrid">
+                            <!-- Calendar will be generated here -->
+                        </div>
+                        
+                        <div class="time-slots" id="timeSlotsContainer" style="display: none;">
+                            <h3 style="margin-top: 20px;">Select Time Slot</h3>
+                            <div id="timeSlots">
+                                <!-- Time slots will be generated here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <form id="guestHouseForm" style="display: none;">
+                        <h3 style="margin-top: 30px;">Guest Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="guestName">Full Name *</label>
+                                <input type="text" id="guestName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="guestContact">Contact Number *</label>
+                                <input type="tel" id="guestContact" value="${state.customerPhone || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="guestEmail">Email Address *</label>
+                                <input type="email" id="guestEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="idUpload">Upload ID Document *</label>
+                                <div class="upload-area" id="idUploadArea">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Click to upload ID document</p>
+                                    <p style="font-size: 12px; color: #666;">(JPEG, PNG or PDF, max 5MB)</p>
+                                    <input type="file" id="idFileInput" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
+                                    <div class="file-name" id="idFileName"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="margin-top: 30px;">Payment Information</h3>
+                        
+                        <div class="payment-method selected" id="bankTransferMethod">
+                            <label>
+                                <input type="radio" name="payment" value="bank_transfer" checked>
+                                Bank Transfer
+                                <img src="image.png" class="payment-logo" alt="Bank Transfer">
+                            </label>
+                            <div class="payment-method-details">
+                                <div style="margin-top: 10px;">
+                                    <div class="bank-info">
+                                        <p><strong>Bank Name:</strong> Bank Of Maldives</p>
+                                        <p><strong>Account Name:</strong> SCORPIORA</p>
+                                        <p><strong>Account Number:</strong> <span class="bank-account-number" id="bookingAccountNumber">7770000203219</span></p>
+                                    </div>
+                                    <p style="margin: 10px 0;">Please upload your payment slip after completing the bank transfer.</p>
+                                    
+                                    <div class="upload-area" id="paymentUploadArea">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <p>Click to upload payment slip</p>
+                                        <p style="font-size: 12px; color: #666;">(JPEG, PNG or PDF, max 5MB)</p>
+                                        <input type="file" id="paymentFileInput" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
+                                        <div class="file-name" id="paymentFileName"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-large" style="margin-top: 30px;">Confirm Booking</button>
+                    </form>
+                </div>
+            `;
+            
+            // Initialize slideshow
+            initGuestHouseSlideshow();
+            
+            // Initialize calendar
+            initCalendar();
+            
+            // File upload handling for ID
+            const idUploadArea = document.getElementById('idUploadArea');
+            const idFileInput = document.getElementById('idFileInput');
+            const idFileName = document.getElementById('idFileName');
+            
+            idUploadArea.addEventListener('click', () => {
+                idFileInput.click();
+            });
+            
+            idFileInput.addEventListener('change', (e) => {
+                handleFileUpload(e, idFileName);
+            });
+            
+            // File upload handling for payment
+            const paymentUploadArea = document.getElementById('paymentUploadArea');
+            const paymentFileInput = document.getElementById('paymentFileInput');
+            const paymentFileName = document.getElementById('paymentFileName');
+            
+            paymentUploadArea.addEventListener('click', () => {
+                paymentFileInput.click();
+            });
+            
+            paymentFileInput.addEventListener('change', (e) => {
+                handleFileUpload(e, paymentFileName);
+            });
+            
+            // Account number copy functionality
+            const accountNumber = document.getElementById('bookingAccountNumber');
+            accountNumber.addEventListener('click', () => {
+                navigator.clipboard.writeText(accountNumber.textContent)
+                    .then(() => {
+                        copyNotification.textContent = 'Account number copied to clipboard!';
+                        copyNotification.classList.add('show');
+                        setTimeout(() => {
+                            copyNotification.classList.remove('show');
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                    });
+            });
+            
+            // Form submission
+            document.getElementById('guestHouseForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Validate files are uploaded
+                if (!idFileInput.files[0]) {
+                    alert('Please upload your ID document');
+                    return;
+                }
+                
+                if (!paymentFileInput.files[0]) {
+                    alert('Please upload your payment slip');
+                    return;
+                }
+                
+                // Get form values
+                const bookingDetails = {
+                    name: document.getElementById('guestName').value,
+                    contact: document.getElementById('guestContact').value,
+                    email: document.getElementById('guestEmail').value,
+                    date: state.selectedBookingDate.toISOString().split('T')[0],
+                    timeSlot: state.selectedTimeSlot,
+                    paymentMethod: 'bank_transfer',
+                    status: 'pending',
+                    createdAt: new Date().toISOString()
+                };
+                
+                // Generate booking reference
+                const bookingRef = 'GH-' + Math.floor(100000 + Math.random() * 900000);
+                bookingDetails.bookingRef = bookingRef;
+                
+                // Save customer phone if provided
+                if (bookingDetails.contact && !state.customerPhone) {
+                    state.customerPhone = bookingDetails.contact;
+                    localStorage.setItem('customerPhone', bookingDetails.contact);
+                }
+                
+                // Save to Firebase
+                database.ref('guestHouseBookings').push(bookingDetails)
+                    .then(() => {
+                        // Update availability
+                        updateGuestHouseAvailability(bookingDetails.date, bookingDetails.timeSlot);
+                        
+                        // Set booking details for confirmation page
+                        state.bookingDetails = bookingDetails;
+                        
+                        loadPage('booking-confirmation');
+                    })
+                    .catch(error => {
+                        alert('Error creating booking: ' + error.message);
+                    });
+            });
+        }
+
+        // Initialize calendar
+        function initCalendar() {
+            const currentMonthElement = document.getElementById('currentMonth');
+            const calendarGrid = document.getElementById('calendarGrid');
+            const prevMonthBtn = document.getElementById('prevMonthBtn');
+            const nextMonthBtn = document.getElementById('nextMonthBtn');
+            
+            let currentDate = new Date();
+            let currentMonth = currentDate.getMonth();
+            let currentYear = currentDate.getFullYear();
+            
+            // Render calendar header
+            function renderCalendarHeader() {
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'];
+                currentMonthElement.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+            }
+            
+            // Render calendar grid
+            function renderCalendarGrid() {
+                calendarGrid.innerHTML = '';
+                
+                // Add day headers
+                const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                dayNames.forEach(day => {
+                    const dayHeader = document.createElement('div');
+                    dayHeader.className = 'calendar-day-header';
+                    dayHeader.textContent = day;
+                    calendarGrid.appendChild(dayHeader);
+                });
+                
+                // Get first day of month
+                const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+                
+                // Get days in month
+                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+                
+                // Add empty cells for days before first day of month
+                for (let i = 0; i < firstDay; i++) {
+                    const emptyCell = document.createElement('div');
+                    emptyCell.className = 'calendar-day';
+                    calendarGrid.appendChild(emptyCell);
+                }
+                
+                // Add days of month
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const date = new Date(currentYear, currentMonth, day);
+                    const dateString = date.toISOString().split('T')[0];
+                    
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day';
+                    
+                    // Check if date is available
+                    const available = isDateAvailable(date);
+                    if (!available) {
+                        dayElement.classList.add('unavailable');
+                    } else if (date.getTime() === today.getTime()) {
+                        dayElement.classList.add('today');
+                    }
+                    
+                    dayElement.textContent = day;
+                    dayElement.setAttribute('data-date', dateString);
+                    
+                    if (available) {
+                        dayElement.addEventListener('click', () => {
+                            selectDate(date);
+                        });
+                    }
+                    
+                    calendarGrid.appendChild(dayElement);
+                }
+            }
+            
+            // Select a date
+            function selectDate(date) {
+                // Remove previous selection
+                document.querySelectorAll('.calendar-day.selected').forEach(el => {
+                    el.classList.remove('selected');
+                });
+                
+                // Add selection to clicked date
+                const dateString = date.toISOString().split('T')[0];
+                document.querySelector(`.calendar-day[data-date="${dateString}"]`).classList.add('selected');
+                
+                state.selectedBookingDate = date;
+                
+                // Show time slots
+                showTimeSlots(date);
+            }
+            
+            // Show time slots for selected date
+            function showTimeSlots(date) {
+                const timeSlotsContainer = document.getElementById('timeSlotsContainer');
+                const timeSlots = document.getElementById('timeSlots');
+                const guestHouseForm = document.getElementById('guestHouseForm');
+                
+                timeSlots.innerHTML = '';
+                
+                // Generate time slots (every 2 hours from 8 AM to 8 PM)
+                const slots = [];
+                for (let hour = 8; hour <= 20; hour += 2) {
+                    const timeSlot = `${hour}:00 - ${hour + 2}:00`;
+                    slots.push(timeSlot);
+                }
+                
+                slots.forEach(slot => {
+                    const slotElement = document.createElement('div');
+                    slotElement.className = 'time-slot';
+                    slotElement.textContent = slot;
+                    slotElement.setAttribute('data-slot', slot);
+                    
+                    // Check if time slot is available
+                    const available = isTimeSlotAvailable(date, slot);
+                    if (!available) {
+                        slotElement.classList.add('unavailable');
+                    } else {
+                        slotElement.addEventListener('click', () => {
+                            // Remove previous selection
+                            document.querySelectorAll('.time-slot.selected').forEach(el => {
+                                el.classList.remove('selected');
+                            });
+                            
+                            // Add selection to clicked slot
+                            slotElement.classList.add('selected');
+                            
+                            state.selectedTimeSlot = slot;
+                            
+                            // Show booking form
+                            guestHouseForm.style.display = 'block';
+                        });
+                    }
+                    
+                    timeSlots.appendChild(slotElement);
+                });
+                
+                timeSlotsContainer.style.display = 'grid';
+            }
+            
+            // Navigate to previous month
+            prevMonthBtn.addEventListener('click', () => {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                renderCalendarHeader();
+                renderCalendarGrid();
+            });
+            
+            // Navigate to next month
+            nextMonthBtn.addEventListener('click', () => {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                renderCalendarHeader();
+                renderCalendarGrid();
+            });
+            
+            // Initial render
+            renderCalendarHeader();
+            renderCalendarGrid();
+        }
+
+        // Update guest house availability
+        function updateGuestHouseAvailability(date, timeSlot) {
+            const dateString = typeof date === 'string' ? date : date.toISOString().split('T')[0];
+            
+            // Get current availability for the date
+            const currentAvailability = state.guestHouseAvailability[dateString] || {
+                available: true,
+                bookedSlots: []
+            };
+            
+            // Add the booked time slot
+            if (!currentAvailability.bookedSlots) {
+                currentAvailability.bookedSlots = [];
+            }
+            
+            currentAvailability.bookedSlots.push(timeSlot);
+            
+            // Check if all time slots are booked
+            if (currentAvailability.bookedSlots.length >= 7) { // 7 time slots per day
+                currentAvailability.available = false;
+            }
+            
+            // Update Firebase
+            database.ref('guestHouseAvailability/' + dateString).set(currentAvailability);
+            
+            // Update local state
+            state.guestHouseAvailability[dateString] = currentAvailability;
+        }
+
+        // Initialize guest house slideshow
+        function initGuestHouseSlideshow() {
+            const slides = document.querySelectorAll('.guest-house-slide');
+            let currentSlide = 0;
+            
+            function nextSlide() {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }
+            
+            // Change slide every 5 seconds
+            setInterval(nextSlide, 5000);
+        }
+
+        // Handle file upload
+        function handleFileUpload(e, fileNameElement) {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size exceeds 5MB limit');
+                    return;
+                }
+                
+                const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+                if (!validTypes.includes(file.type)) {
+                    alert('Please upload a JPEG, PNG, or PDF file');
+                    return;
+                }
+                
+                fileNameElement.textContent = file.name;
+            }
+        }
+
+        // Render booking page
+        function renderBookingPage() {
+            mainContent.innerHTML = `
+                <h1>Current Bookings</h1>
+                <p style="margin-bottom: 15px;">View and manage your current bookings</p>
+                
+                <div style="background-color: white; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <i class="fas fa-calendar-check" style="font-size: 60px; color: #4a9e5b; margin-bottom: 20px;"></i>
+                        <h2>No Active Bookings</h2>
+                        <p style="margin-bottom: 30px;">You don't have any active bookings at the moment.</p>
+                        <a href="#" class="btn" id="bookGuestHouseBtn">Book Guest House</a>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('bookGuestHouseBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                loadPage('guest-house');
+            });
+        }
+
+        // Render booking confirmation page
+        function renderBookingConfirmationPage() {
+            if (!state.bookingDetails) {
+                loadPage('guest-house');
+                return;
+            }
+            
+            const { bookingRef, name, contact, email, date, timeSlot } = state.bookingDetails;
+            
+            mainContent.innerHTML = `
+                <div class="booking-confirmation">
+                    <i class="fas fa-check-circle"></i>
+                    <h1>Booking Confirmed!</h1>
+                    <p>Thank you for your booking. Your reservation has been confirmed.</p>
+                    
+                    <div class="reference-number">${bookingRef}</div>
+                    
+                    <div class="booking-details">
+                        <h3>Booking Details</h3>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Booking Reference:</span>
+                            <span>${bookingRef}</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Guest Name:</span>
+                            <span>${name}</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Contact:</span>
+                            <span>${contact}</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Email:</span>
+                            <span>${email}</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Date:</span>
+                            <span>${new Date(date).toLocaleDateString()}</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Time Slot:</span>
+                            <span>${timeSlot}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="status-check-info">
+                        <h3>Manage Your Booking</h3>
+                        <p>You can check the status of your booking anytime using your reference number:</p>
+                        <p><strong>${bookingRef}</strong></p>
+                        <p>Visit the <a href="#" id="orderStatusLink">Order Status</a> page to track your booking.</p>
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <a href="#" class="btn" id="backToHomeBtn">Back to Home</a>
+                        <a href="#" class="btn btn-secondary" id="orderStatusBtn">Check Booking Status</a>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('backToHomeBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                loadPage('home');
+            });
+            
+            document.getElementById('orderStatusBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                loadPage('order-status');
+            });
+            
+            document.getElementById('orderStatusLink').addEventListener('click', (e) => {
+                e.preventDefault();
+                loadPage('order-status');
+            });
+        }
+
+             // Render points page
+        function renderPointsPage() {
+            mainContent.innerHTML = `
+                <div class="points-section">
+                    <h1>Redeem Your Points</h1>
+                    <p style="margin-bottom: 15px;">Earn 1 point for every MVR 10 spent. Use your points for discounts and free items!</p>
+                    
+                    <div class="points-balance" id="pointsBalance">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                            <input type="tel" id="phoneCheck" placeholder="Enter your phone number" value="${state.customerPhone || ''}" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px; flex: 1;">
+                            <button class="btn" id="checkPointsBtn">Check Points</button>
+                        </div>
+                        <div id="pointsResult"></div>
+                    </div>
+                    
+                    <div class="redeem-section">
+                        <h2>Redeem Your Points</h2>
+                        <p>Select a reward to redeem using your points:</p>
+                        
+                        <div class="redeem-options">
+                            ${state.pointsProducts.map(product => `
+                                <div class="redeem-option" data-id="${product.id}">
+                                    <img src="${product.image}" alt="${product.name}" style="width: 60px; height: 60px; object-fit: contain; margin-bottom: 10px;">
+                                    <h4>${product.name}</h4>
+                                    <p>${product.description}</p>
+                                    <div class="points-cost">${product.points} points</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Check points button event
+            document.getElementById('checkPointsBtn').addEventListener('click', () => {
+                const phone = document.getElementById('phoneCheck').value.trim();
+                
+                if (!phone) {
+                    alert('Please enter your phone number');
+                    return;
+                }
+                
+                checkCustomerPoints(phone);
+            });
+            
+            // Redeem option selection
+            document.querySelectorAll('.redeem-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    if (!state.customerPhone) {
+                        alert('Please check your points balance first');
+                        return;
+                    }
+                    
+                    const productId = option.dataset.id;
+                    const pointsProduct = state.pointsProducts.find(p => p.id === productId);
+                    
+                    if (state.customerPoints < pointsProduct.points) {
+                        alert(`You don't have enough points. You need ${pointsProduct.points} points but only have ${state.customerPoints}.`);
+                        return;
+                    }
+                    
+                    // Handle different redemption types
+                    if (pointsProduct.maxValue) {
+                        // Product redemption
+                        redeemPointsForProduct(pointsProduct);
+                    } else if (pointsProduct.bookingType) {
+                        // Booking redemption
+                        redeemPointsForBooking(pointsProduct);
+                    }
+                });
+            });
+        }
+// Check customer points
+function checkCustomerPoints(phone) {
+    database.ref('customerPoints').orderByChild('phone').equalTo(phone).once('value')
+        .then(snapshot => {
+            const pointsResult = document.getElementById('pointsResult');
+            
+            // Check if the pointsResult element exists on the current page
+            if (!pointsResult) {
+                console.log('Points result element not found on this page');
+                return;
+            }
+            
+            if (snapshot.exists()) {
+                const customerData = Object.values(snapshot.val())[0];
+                state.customerPoints = customerData.points || 0;
+                state.customerPhone = phone;
+                localStorage.setItem('customerPhone', phone);
+                
+                pointsResult.innerHTML = `
+                    <div style="background-color: #f0f9f1; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                        <h3 style="color: #4a9e5b; margin-bottom: 10px;">Points Balance</h3>
+                        <div style="font-size: 24px; font-weight: bold; color: #4a9e5b;">${state.customerPoints} points</div>
+                        <p style="margin-top: 10px; font-size: 14px;">You can redeem your points for rewards below!</p>
+                    </div>
+                `;
+            } else {
+                state.customerPoints = 0;
+                
+                pointsResult.innerHTML = `
+                    <div style="background-color: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                      <h3 style="color: #856404; margin-bottom: 10px;">No Points Found</h3>
+                        <p>No points found for this phone number. Points are earned when you place orders.</p>
+                        <p style="margin-top: 10px; font-size: 14px;">Earn 1 point for every MVR 10 spent!</p>
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            alert('Error checking points: ' + error.message);
+        });
+}
+
+        // Redeem points for a product
+        function redeemPointsForProduct(pointsProduct) {
+            // Show available products within the price range
+            const eligibleProducts = [...state.products, ...state.smoothies].filter(
+                product => product.price <= pointsProduct.maxValue
+            );
+            
+            if (eligibleProducts.length === 0) {
+                alert('No products available for redemption at this time.');
+                return;
+            }
+            
+            mainContent.innerHTML += `
+                <div class="points-section">
+                    <h2>Select Product to Redeem</h2>
+                    <p>Your ${pointsProduct.points} points can be used for any product under MVR ${pointsProduct.maxValue}</p>
+                    
+                    <div class="product-grid">
+                        ${eligibleProducts.map(product => `
+                            <div class="product-card">
+                                <img src="${product.image}" alt="${product.name}">
+                                <div class="product-overlay">
+                                    <div class="product-actions-overlay">
+                                        <button class="btn redeem-product-btn" data-id="${product.id}" data-type="${product.hasOwnProperty('ingredients') ? 'smoothie' : 'product'}">Redeem Now</button>
+                                    </div>
+                                </div>
+                                <h3>${product.name}</h3>
+                                <div class="price">
+                                    <span class="current-price">MVR${product.price.toFixed(2)}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            // Add event listeners for redemption
+            document.querySelectorAll('.redeem-product-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const productId = btn.dataset.id;
+                    const productType = btn.dataset.type;
+                    
+                    let product;
+                    if (productType === 'smoothie') {
+                        product = state.smoothies.find(s => s.id === productId);
+                    } else {
+                        product = state.products.find(p => p.id === productId);
+                    }
+                    
+                    if (confirm(`Redeem ${pointsProduct.points} points for ${product.name}?`)) {
+                        // Set points redemption state
+                        state.pointsRedemption = true;
+                        state.pointsRedemptionProduct = {
+                            product: product,
+                            pointsProduct: pointsProduct
+                        };
+                        
+                        // Add to cart with fixed quantity of 1 (can't be changed)
+                        addToCart(productId, 1, true);
+                        
+                        // Load points checkout page
+                        loadPage('points-checkout');
+                    }
+                });
+            });
+        }
+
+        // Redeem points for a booking
+        function redeemPointsForBooking(pointsProduct) {
+            state.bookingType = pointsProduct.bookingType;
+            state.pointsRedemption = true;
+            state.pointsRedemptionProduct = pointsProduct;
+            
+            // Load points booking page
+            loadPage('points-booking');
+        }
+
+        // Deduct points from customer
+        function deductPoints(points) {
+            database.ref('customerPoints').orderByChild('phone').equalTo(state.customerPhone).once('value')
+                .then(snapshot => {
+                    if (snapshot.exists()) {
+                        const customerData = Object.entries(snapshot.val())[0];
+                        const customerId = customerData[0];
+                        const currentPoints = customerData[1].points || 0;
+                        
+                        database.ref('customerPoints/' + customerId).update({
+                            points: currentPoints - points
+                        });
+                        
+                        state.customerPoints = currentPoints - points;
+                    }
+                });
+        }
+
+        // Render points checkout page (for product redemption)
+        function renderPointsCheckoutPage() {
+            if (!state.pointsRedemption || !state.pointsRedemptionProduct) {
+                loadPage('points');
+                return;
+            }
+            
+            const { product, pointsProduct } = state.pointsRedemptionProduct;
+            
+            mainContent.innerHTML = `
+                <div class="redemption-confirmation">
+                    <i class="fas fa-gift"></i>
+                    <h1>Points Redemption</h1>
+                    <p>You are redeeming ${pointsProduct.points} points for ${product.name}</p>
+                    
+                    <div class="redemption-details">
+                        <h3>Redemption Details</h3>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Product:</span>
+                            <span>${product.name}</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Points Used:</span>
+                            <span>${pointsProduct.points} points</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Remaining Points:</span>
+                            <span>${state.customerPoints - pointsProduct.points} points</span>
+                        </div>
+                    </div>
+                    
+                    <h2 style="margin-top: 20px;">Shipping Information</h2>
+                    <form id="pointsShippingForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="pointsFullName">Full Name *</label>
+                                <input type="text" id="pointsFullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="pointsPhone">Phone Number *</label>
+                                <input type="tel" id="pointsPhone" value="${state.customerPhone || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="pointsAddress">Address *</label>
+                                <input type="text" id="pointsAddress" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="pointsIsland">Island *</label>
+                                <select id="pointsIsland" required>
+                                    <option value="">Select Island</option>
+                                    <option>S.Hithadhoo</option>
+                                    <option>S.Maradhoo</option>
+                                    <option>S.MaradhooFeydhoo</option>
+                                    <option>S.Feydhoo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <button class="btn" id="confirmPointsRedemption" style="margin-top: 20px;">Confirm Redemption</button>
+                </div>
+            `;
+            
+            document.getElementById('confirmPointsRedemption').addEventListener('click', () => {
+                if (!document.getElementById('pointsShippingForm').checkValidity()) {
+                    alert('Please fill out all required shipping information.');
+                    return;
+                }
+                
+                // Deduct points
+                deductPoints(pointsProduct.points);
+                
+                // Generate order details
+                const orderNumber = 'POINTS-' + Math.floor(100000 + Math.random() * 900000);
+                const orderDetails = {
+                    orderNumber,
+                    items: [{
+                        product: product,
+                        quantity: 1,
+                        isSmoothie: product.hasOwnProperty('ingredients')
+                    }],
+                    subtotal: 0,
+                    shipping: 0,
+                    total: 0,
+                    date: new Date().toLocaleDateString(),
+                    status: 'confirmed',
+                    paymentMethod: 'points_redemption',
+                    shippingInfo: {
+                        name: document.getElementById('pointsFullName').value,
+                        address: document.getElementById('pointsAddress').value,
+                        island: document.getElementById('pointsIsland').value,
+                        phone: document.getElementById('pointsPhone').value
+                    },
+                    pointsUsed: pointsProduct.points
+                };
+                
+                // Save order to Firebase
+                database.ref('orders').push(orderDetails)
+                    .then(() => {
+                        // Remove the redeemed product from cart
+                        removeFromCart(product.id);
+                        
+                        // Set confirmation details and load confirmation page
+                        state.redemptionDetails = {
+                            orderNumber,
+                            product: product,
+                            pointsUsed: pointsProduct.points,
+                            remainingPoints: state.customerPoints - pointsProduct.points
+                        };
+                        
+                        loadPage('redemption-confirmation');
+                    })
+                    .catch(error => {
+                        alert('Error processing redemption: ' + error.message);
+                    });
+            });
+        }
+
+        // Render points booking page (for booking redemption)
+        function renderPointsBookingPage() {
+            if (!state.pointsRedemption || !state.pointsRedemptionProduct) {
+                loadPage('points');
+                return;
+            }
+            
+            const pointsProduct = state.pointsRedemptionProduct;
+            
+            mainContent.innerHTML = `
+                <div class="redemption-confirmation">
+                    <i class="fas fa-gift"></i>
+                    <h1>Points Redemption</h1>
+                    <p>You are redeeming ${pointsProduct.points} points for a ${pointsProduct.name}</p>
+                    
+                    <div class="redemption-details">
+                        <h3>Redemption Details</h3>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Booking Type:</span>
+                            <span>${pointsProduct.name}</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Points Used:</span>
+                            <span>${pointsProduct.points} points</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Remaining Points:</span>
+                            <span>${state.customerPoints - pointsProduct.points} points</span>
+                        </div>
+                    </div>
+                    
+                    <h2 style="margin-top: 20px;">Booking Information</h2>
+                    <form id="pointsBookingForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="pointsBookingName">Full Name *</label>
+                                <input type="text" id="pointsBookingName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="pointsBookingPhone">Phone Number *</label>
+                                <input type="tel" id="pointsBookingPhone" value="${state.customerPhone || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="pointsBookingEmail">Email Address *</label>
+                                <input type="email" id="pointsBookingEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="pointsBookingDate">Date *</label>
+                                <input type="date" id="pointsBookingDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="pointsBookingTime">Time *</label>
+                                <input type="time" id="pointsBookingTime" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="pointsBookingDuration">Duration (hours) *</label>
+                                <select id="pointsBookingDuration" required>
+                                    <option value="1">1 hour</option>
+                                    <option value="2">2 hours</option>
+                                    <option value="3">3 hours</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="pointsBookingPeople">Number of People *</label>
+                                <input type="number" id="pointsBookingPeople" min="1" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pointsBookingRequests">Special Requests</label>
+                            <textarea id="pointsBookingRequests" placeholder="Any special requests or requirements"></textarea>
+                        </div>
+                    </form>
+                    
+                    <button class="btn" id="confirmPointsBooking" style="margin-top: 20px;">Confirm Booking</button>
+                </div>
+            `;
+            
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('pointsBookingDate').min = today;
+            
+            document.getElementById('confirmPointsBooking').addEventListener('click', () => {
+                if (!document.getElementById('pointsBookingForm').checkValidity()) {
+                    alert('Please fill out all required booking information.');
+                    return;
+                }
+                
+                // Deduct points
+                deductPoints(pointsProduct.points);
+                
+                // Generate booking details
+                const bookingRef = 'POINTS-BK-' + Math.floor(100000 + Math.random() * 900000);
+                const bookingDetails = {
+                    bookingRef,
+                    type: pointsProduct.bookingType,
+                    name: document.getElementById('pointsBookingName').value,
+                    phone: document.getElementById('pointsBookingPhone').value,
+                    email: document.getElementById('pointsBookingEmail').value,
+                    date: document.getElementById('pointsBookingDate').value,
+                    time: document.getElementById('pointsBookingTime').value,
+                    duration: document.getElementById('pointsBookingDuration').value,
+                    people: document.getElementById('pointsBookingPeople').value,
+                    requests: document.getElementById('pointsBookingRequests').value,
+                    status: 'confirmed',
+                    paymentMethod: 'points_redemption',
+                    createdAt: new Date().toISOString(),
+                    pointsUsed: pointsProduct.points
+                };
+                
+                // Save booking to Firebase
+                database.ref('bookings').push(bookingDetails)
+                    .then(() => {
+                        // Set confirmation details and load confirmation page
+                        state.redemptionDetails = {
+                            bookingRef,
+                            bookingType: pointsProduct.name,
+                            pointsUsed: pointsProduct.points,
+                            remainingPoints: state.customerPoints - pointsProduct.points
+                        };
+                        
+                        loadPage('redemption-confirmation');
+                    })
+                    .catch(error => {
+                        alert('Error processing booking: ' + error.message);
+                    });
+            });
+        }
+
+        // Render redemption confirmation page
+        function renderRedemptionConfirmationPage() {
+            if (!state.redemptionDetails) {
+                loadPage('points');
+                return;
+            }
+            
+            const { orderNumber, bookingRef, product, bookingType, pointsUsed, remainingPoints } = state.redemptionDetails;
+            const referenceNumber = orderNumber || bookingRef;
+            
+            mainContent.innerHTML = `
+                <div class="redemption-confirmation">
+                    <i class="fas fa-check-circle"></i>
+                    <h1>Redemption Successful!</h1>
+                    <p>Your points have been successfully redeemed.</p>
+                    
+                    <div class="reference-number">${referenceNumber}</div>
+                    
+                    <div class="redemption-details">
+                        <h3>Redemption Details</h3>
+                        ${orderNumber ? `
+                            <div class="order-details-row">
+                                <span class="order-details-label">Product:</span>
+                                <span>${product.name}</span>
+                            </div>
+                        ` : `
+                            <div class="order-details-row">
+                                <span class="order-details-label>Booking Type:</span>
+                                <span>${bookingType}</span>
+                            </div>
+                        `}
+                        <div class="order-details-row">
+                            <span class="order-details-label">Points Used:</span>
+                            <span>${pointsUsed} points</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Remaining Points:</span>
+                            <span>${remainingPoints} points</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Reference Number:</span>
+                            <span>${referenceNumber}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="status-check-info">
+                        <h3>Track Your Order</h3>
+                        <p>You can check the status of your ${orderNumber ? 'order' : 'booking'} anytime using your reference number:</p>
+                        <p><strong>${referenceNumber}</strong></p>
+                        <p>Visit the <a href="#" id="orderStatusLink">Order Status</a> page to track your ${orderNumber ? 'order' : 'booking'}.</p>
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <a href="#" class="btn" id="backToHomeBtn">Back to Home</a>
+                        <a href="#" class="btn btn-secondary" id="orderStatusBtn">Check Order Status</a>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('backToHomeBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                loadPage('home');
+            });
+            
+            document.getElementById('orderStatusBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                loadPage('order-status');
+            });
+            
+            document.getElementById('orderStatusLink').addEventListener('click', (e) => {
+                e.preventDefault();
+                loadPage('order-status');
+            });
+        }
+
+        // Render location page with Google Maps
+        function renderLocationPage() {
+            mainContent.innerHTML = `
+                <div class="location-section">
+                    <h2>Our Location</h2>
+                    <p style="margin-bottom: 15px;">Visit us at our store for the freshest juices and smoothies!</p>
+                    
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1012.6683292569796!2d73.09563745811272!3d-0.6125645494069025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x24b59fdbf46f56d5%3A0xa326174f7d67ca9f!2sAddu%20City%20Square!5e1!3m2!1sen!2smv!4v1756636690037!5m2!1sen!2smv" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                    
+                    <div class="location-info">
+                        <div class="location-details">
+                            <h3>Store Information</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> Hithadhoo, Addu City, Maldives</p>
+                            <p><i class="fas fa-phone"></i> <a href="tel:+9607933305">+960 7933305</a></p>
+                            <p><i class="fas fa-envelope"></i> <a href="mailto:scorpiora.co@gmail.com">scorpiora.co@gmail.com</a></p>
+                            <p><i class="fas fa-clock"></i> Open Daily: 8:00 AM - 10:00 PM</p>
+                            
+                            <h3 style="margin-top: 20px;">Delivery Areas</h3>
+                            <p>We deliver to all islands in Addu Atoll:</p>
+                            <ul style="margin-left: 20px; margin-top: 10px;">
+                                <li>S. Hithadhoo</li>
+                                <li>S. Maradhoo</li>
+                                <li>S. Maradhoo-Feydhoo</li>
+                                <li>S. Feydhoo</li>
+                                <li>S. Hulhudhoo</li>
+                                <li>S. Meedhoo</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="location-details">
+                            <h3>Get Directions</h3>
+                            <p>Enter your location to get directions to our store:</p>
+                            <div style="margin-top: 15px;">
+                                <input type="text" id="directionsFrom" placeholder="Enter your location" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 10px;">
+                                <button class="btn" id="getDirectionsBtn">Get Directions</button>
+                            </div>
+                            <div id="directionsPanel" style="margin-top: 15px; padding: 15px; background-color: #f9f9f9; border-radius: 4px; display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Get directions button event
+            document.getElementById('getDirectionsBtn').addEventListener('click', () => {
+                const from = document.getElementById('directionsFrom').value;
+                if (from) {
+                    window.open(`https://www.google.com/maps/dir/${encodeURIComponent(from)}/Addu+City+Square,+Hithadhoo,+Maldives/`, '_blank');
+                } else {
+                    alert('Please enter your location');
+                }
+            });
+        }
+
+        // Render order status page
+        function renderOrderStatusPage() {
+            mainContent.innerHTML = `
+                <h1>Order Status Tracker</h1>
+                <p style="margin-bottom: 15px;">Enter your order reference number to check the status of your order or booking</p>
+                
+                <div class="order-status">
+                    <div class="status-tracker-form">
+                        <input type="text" id="orderReference" placeholder="Enter your order/booking reference number">
+                        <button class="btn" id="trackOrderBtn">Track Status</button>
+                    </div>
+                    
+                    <div id="orderStatusResult" style="display: none;">
+                        <div class="status-timeline">
+                            <div class="status-step">
+                                <div class="status-icon active" id="statusOrdered">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <div class="status-label">Ordered</div>
+                            </div>
+                            <div class="status-step">
+                                <div class="status-icon" id="statusPreparing">
+                                    <i class="fas fa-blender"></i>
+                                </div>
+                                <div class="status-label">Preparing</div>
+                            </div>
+                            <div class="status-step">
+                                <div class="status-icon" id="statusOnTheWay">
+                                    <i class="fas fa-motorcycle"></i>
+                                </div>
+                                <div class="status-label">On the Way</div>
+                            </div>
+                            <div class="status-step">
+                                <div class="status-icon" id="statusDelivered">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <div class="status-label">Delivered</div>
+                            </div>
+                        </div>
+                        
+                        <div id="orderDetails" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; margin-top: 20px;"></div>
+                    </div>
+                </div>
+            `;
+            
+            // Track order button event
+            document.getElementById('trackOrderBtn').addEventListener('click', () => {
+                const orderRef = document.getElementById('orderReference').value.trim();
+                
+                if (!orderRef) {
+                    alert('Please enter your order reference number');
+                    return;
+                }
+                
+                trackOrderStatus(orderRef);
+            });
+        }
+
+        // Track order status
+        function trackOrderStatus(orderRef) {
+            // First check if it's a regular order
+            database.ref('orders').orderByChild('orderNumber').equalTo(orderRef).once('value')
+                .then(snapshot => {
+                    if (snapshot.exists()) {
+                        const orderData = Object.values(snapshot.val())[0];
+                        displayOrderStatus(orderRef, orderData, 'order');
+                    } else {
+                        // If not found in orders, check bookings
+                        database.ref('bookings').orderByChild('bookingRef').equalTo(orderRef).once('value')
+                            .then(bookingSnapshot => {
+                                if (bookingSnapshot.exists()) {
+                                    const bookingData = Object.values(bookingSnapshot.val())[0];
+                                    displayOrderStatus(orderRef, bookingData, 'booking');
+                                } else {
+                                    // Check guest house bookings
+                                    database.ref('guestHouseBookings').orderByChild('bookingRef').equalTo(orderRef).once('value')
+                                        .then(guestHouseSnapshot => {
+                                            if (guestHouseSnapshot.exists()) {
+                                                const guestHouseData = Object.values(guestHouseSnapshot.val())[0];
+                                                displayOrderStatus(orderRef, guestHouseData, 'guesthouse');
+                                            } else {
+                                                displayOrderNotFound(orderRef);
+                                            }
+                                        });
+                                }
+                            });
+                    }
+                })
+                .catch(error => {
+                    alert('Error tracking order: ' + error.message);
+                });
+        }
+
+        // Display order status
+        function displayOrderStatus(orderRef, orderData, type) {
+            const orderStatusResult = document.getElementById('orderStatusResult');
+            const orderDetails = document.getElementById('orderDetails');
+            
+            // Show order status result
+            orderStatusResult.style.display = 'block';
+            
+            // Update status timeline based on type
+            if (type === 'order') {
+                updateStatusIcons(orderData.status);
+                
+                // Display order details
+                orderDetails.innerHTML = `
+                    <h3>Order Details: ${orderRef}</h3>
+                    <p><strong>Order Date:</strong> ${orderData.date}</p>
+                    <p><strong>Status:</strong> ${orderData.status}</p>
+                    <p><strong>Total Amount:</strong> MVR${orderData.total.toFixed(2)}</p>
+                    <p><strong>Shipping Address:</strong> ${orderData.shippingInfo.address}, ${orderData.shippingInfo.island}</p>
+                    <p><strong>Contact:</strong> ${orderData.shippingInfo.phone}</p>
+                    
+                    <h4 style="margin-top: 15px;">Items:</h4>
+                    ${orderData.items.map(item => `
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>${item.product.name} x ${item.quantity}</span>
+                            <span>MVR${(item.product.price * item.quantity).toFixed(2)}</span>
+                        </div>
+                    `).join('')}
+                `;
+            } else if (type === 'booking' || type === 'guesthouse') {
+                // For bookings, show different status icons
+                updateBookingStatusIcons(orderData.status);
+                
+                const isGuestHouse = type === 'guesthouse';
+                const title = isGuestHouse ? 'Guest House Booking' : 'Activity Booking';
+                
+                orderDetails.innerHTML = `
+                    <h3>${title} Details: ${orderRef}</h3>
+                    <p><strong>Booking Date:</strong> ${new Date(orderData.createdAt).toLocaleDateString()}</p>
+                    <p><strong>Status:</strong> ${orderData.status}</p>
+                    <p><strong>Customer:</strong> ${orderData.name}</p>
+                    <p><strong>Contact:</strong> ${orderData.phone}</p>
+                    
+                    ${isGuestHouse ? `
+                        <p><strong>Check-in:</strong> ${orderData.checkinDate} at ${orderData.checkinTime}</p>
+                        <p><strong>Check-out:</strong> ${orderData.checkoutDate} at ${orderData.checkoutTime}</p>
+                    ` : `
+                        <p><strong>Booking Date:</strong> ${orderData.date} at ${orderData.time}</p>
+                        <p><strong>Duration:</strong> ${orderData.duration} hours</p>
+                        <p><strong>Number of People:</strong> ${orderData.people}</p>
+                    `}
+                    
+                    ${orderData.specialRequests ? `
+                        <p><strong>Special Requests:</strong> ${orderData.specialRequests}</p>
+                    ` : ''}
+                `;
+            }
+        }
+
+        // Display order not found
+        function displayOrderNotFound(orderRef) {
+            const orderStatusResult = document.getElementById('orderStatusResult');
+            const orderDetails = document.getElementById('orderDetails');
+            
+            orderStatusResult.style.display = 'block';
+            orderDetails.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <i class="fas fa-exclamation-circle" style="font-size: 48px; color: #ff6b6b;"></i>
+                    <h3>Order Not Found</h3>
+                    <p>No order found with reference number: ${orderRef}</p>
+                    <p>Please check your reference number and try again.</p>
+                </div>
+            `;
+        }
+
+        // Update status icons based on order status
+        function updateStatusIcons(status) {
+            // Reset all icons
+            document.getElementById('statusOrdered').classList.remove('active');
+            document.getElementById('statusPreparing').classList.remove('active');
+            document.getElementById('statusOnTheWay').classList.remove('active');
+            document.getElementById('statusDelivered').classList.remove('active');
+            
+            // Activate icons based on status
+            document.getElementById('statusOrdered').classList.add('active');
+            
+            if (status === 'preparing' || status === 'on-the-way' || status === 'delivered') {
+                document.getElementById('statusPreparing').classList.add('active');
+            }
+            
+            if (status === 'on-the-way' || status === 'delivered') {
+                document.getElementById('statusOnTheWay').classList.add('active');
+            }
+            
+            if (status === 'delivered') {
+                document.getElementById('statusDelivered').classList.add('active');
+            }
+        }
+
+        // Update booking status icons
+        function updateBookingStatusIcons(status) {
+            // Reset all icons
+            document.getElementById('statusOrdered').classList.remove('active');
+            document.getElementById('statusPreparing').classList.remove('active');
+            document.getElementById('statusOnTheWay').classList.remove('active');
+            document.getElementById('statusDelivered').classList.remove('active');
+            
+            // Update labels for bookings
+            document.querySelectorAll('.status-label')[0].textContent = 'Booked';
+            document.querySelectorAll('.status-label')[1].textContent = 'Confirmed';
+            document.querySelectorAll('.status-label')[2].textContent = 'In Progress';
+            document.querySelectorAll('.status-label')[3].textContent = 'Completed';
+            
+            // Activate icons based on status
+            document.getElementById('statusOrdered').classList.add('active');
+            
+            if (status === 'confirmed' || status === 'in-progress' || status === 'completed') {
+                document.getElementById('statusPreparing').classList.add('active');
+            }
+            
+            if (status === 'in-progress' || status === 'completed') {
+                document.getElementById('statusOnTheWay').classList.add('active');
+            }
+            
+            if (status === 'completed') {
+                document.getElementById('statusDelivered').classList.add('active');
+            }
+        }
+
+        // Render pending review page
+        function renderPendingReviewPage() {
+            if (!state.orderDetails) {
+                loadPage('home');
+                return;
+            }
+            
+            mainContent.innerHTML = `
+                <div class="pending-review">
+                    <i class="fas fa-clock"></i>
+                    <h1>Order Pending Review</h1>
+                    <p>Your order <strong>${state.orderDetails.orderNumber}</strong> has been received and is pending payment verification.</p>
+                    <p>We will process your order once we verify your bank transfer.</p>
+                    <p>You will receive a confirmation email/SMS once your order is approved.</p>
+                    
+                    <div class="order-details">
+                        <h3>Order Summary</h3>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Order Number:</span>
+                            <span>${state.orderDetails.orderNumber}</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Order Date:</span>
+                            <span>${state.orderDetails.date}</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Total Amount:</span>
+                            <span>MVR${state.orderDetails.total.toFixed(2)}</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Payment Method:</span>
+                            <span>Bank Transfer</span>
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="btn" id="backToHomeBtn">Back to Home</a>
+                </div>
+            `;
+            
+            document.getElementById('backToHomeBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                loadPage('home');
+            });
+        }
+
+        // Render order confirmation page
+        function renderOrderConfirmationPage() {
+            if (!state.orderDetails) {
+                loadPage('home');
+                return;
+            }
+            
+            mainContent.innerHTML = `
+                <div class="order-confirmation">
+                    <i class="fas fa-check-circle"></i>
+                    <h1>Order Confirmed!</h1>
+                    <p>Thank you for your order. Your order has been confirmed and will be processed shortly.</p>
+                    
+                    <div class="order-details">
+                        <h3>Order Details</h3>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Order Number:</span>
+                            <span>${state.orderDetails.orderNumber}</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Order Date:</span>
+                            <span>${state.orderDetails.date}</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Total Amount:</span>
+                            <span>MVR${state.orderDetails.total.toFixed(2)}</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Payment Method:</span>
+                            <span>Bank Transfer</span>
+                        </div>
+                        <div class="order-details-row">
+                            <span class="order-details-label">Estimated Delivery:</span>
+                            <span>30-45 minutes</span>
+                        </div>
+                    </div>
+                    
+                    <p>You will receive an SMS with order tracking details shortly.</p>
+                    
+                    <a href="#" class="btn" id="trackOrderBtnConfirm">Track Your Order</a>
+                    <a href="#" class="btn btn-secondary" id="backToHomeBtnConfirm">Back to Home</a>
+                </div>
+            `;
+            
+            document.getElementById('backToHomeBtnConfirm').addEventListener('click', (e) => {
+                e.preventDefault();
+                loadPage('home');
+            });
+            
+            document.getElementById('trackOrderBtnConfirm').addEventListener('click', (e) => {
+                e.preventDefault();
+                loadPage('order-status');
+            });
+        }
+
+        // Update active navigation link
+        function updateActiveNavLink() {
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Add active class to current page link
+            document.querySelectorAll(`.nav-link[data-page="${state.currentPage}"]`).forEach(link => {
+                link.classList.add('active');
+            });
+            
+            // Update page title
+            const pageTitles = {
+                'home': 'Home',
+                'products': 'Our Products',
+                'product': 'Product Details',
+                'smoothies': 'Smoothies',
+                'smoothie-detail': 'Smoothie Details',
+                'cart': 'Shopping Cart',
+                'checkout': 'Checkout',
+                'guest-house': 'Guest House',
+                'booking': 'Bookings',
+                'order-status': 'Order Status',
+                'points': 'Redeem Points',
+                'location': 'Location',
+                'pending-review': 'Order Pending',
+                'order-confirmation': 'Order Confirmed',
+                'points-checkout': 'Points Checkout',
+                'points-booking': 'Points Booking',
+                'redemption-confirmation': 'Redemption Confirmed',
+                'booking-confirmation': 'Booking Confirmed'
+            };
+            
+            document.title = `${pageTitles[state.currentPage] || 'Scorpiora'} | ${state.catalogName}`;
+        }
+
+        // Add product to cart
+        function addToCart(productId, quantity = 1, isPointsRedemption = false) {
+            if (state.cart[productId] && !isPointsRedemption) {
+                state.cart[productId] += quantity;
+            } else {
+                state.cart[productId] = quantity;
+            }
+            
+            saveCart();
+            updateCartCount();
+        }
+
+        // Remove product from cart
+        function removeFromCart(productId) {
+            delete state.cart[productId];
+            saveCart();
+            updateCartCount();
+            renderCartPage();
+        }
+
+        // Save cart to localStorage
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(state.cart));
+        }
+
+        // Update cart count badge
+        function updateCartCount() {
+            const count = Object.values(state.cart).reduce((a, b) => a + b, 0);
+            cartCount.textContent = count;
+            
+            if (count > 0) {
+                cartCount.style.display = 'flex';
+            } else {
+                cartCount.style.display = 'none';
+            } 
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+    <script>
+         // Render booking page with enhanced UI
+        function renderBookingPage() {
+            const isPointsRedemption = state.bookingType && state.customerPoints > 0;
+            
+            mainContent.innerHTML = `
+                <h1>Bookings & Reservations</h1>
+                ${isPointsRedemption ? 
+                    `<div style="background-color: #f0f9f1; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <i class="fas fa-gift" style="color: #4a9e5b; margin-right: 10px;"></i>
+                        <strong>Points Redemption:</strong> Your booking will be free using your points!
+                    </div>` : 
+                    ''
+                }
+                <p style="margin-bottom: 15px;">Book our karaoke room or make a reservation for your special event</p>
+                
+                <div class="booking-section">
+                    <h2>Select Booking Type</h2>
+                    <div class="booking-options">
+                        <div class="booking-option karaoke ${state.bookingType === 'karaoke' ? 'selected' : ''}" data-type="karaoke">
+                            <i class="fas fa-microphone"></i>
+                            <h3>Karaoke Booking</h3>
+                            <p>Book our private karaoke room</p>
+                        </div>
+                        <div class="booking-option small-party ${state.bookingType === 'small-party' ? 'selected' : ''}" data-type="small-party">
+                            <i class="fas fa-users"></i>
+                            <h3>Small Party</h3>
+                            <p>Up to 10 people</p>
+                        </div>
+                        <div class="booking-option office-gathering ${state.bookingType === 'office-gathering' ? 'selected' : ''}" data-type="office-gathering">
+                            <i class="fas fa-building"></i>
+                            <h3>Office Gathering</h3>
+                            <p>Team events & meetings</p>
+                        </div>
+                        <div class="booking-option private-event ${state.bookingType === 'private-event' ? 'selected' : ''}" data-type="private-event">
+                            <i class="fas fa-glass-cheers"></i>
+                            <h3>Private Event</h3>
+                            <p>Birthdays, anniversaries</p>
+                        </div>
+                        <div class="booking-option bbq ${state.bookingType === 'bbq' ? 'selected' : ''}" data-type="bbq">
+                            <i class="fas fa-fire"></i>
+                            <h3>BBQ Party</h3>
+                            <p>Outdoor BBQ setup</p>
+                        </div>
+                    </div>
+                    
+                    <div id="bookingForm" class="booking-form ${state.bookingType ? 'active' : ''}">
+                        <h3 id="bookingFormTitle">${state.bookingType ? state.bookingType.charAt(0).toUpperCase() + state.bookingType.slice(1).replace('-', ' ') + ' Booking' : 'Booking Form'}</h3>
+                        <form id="bookingFormData">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Full Name *</label>
+                                    <input type="text" id="bookingName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number *</label>
+                                    <input type="tel" id="bookingPhone" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Date *</label>
+                                    <input type="date" id="bookingDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Time *</label>
+                                    <input type="time" id="bookingTime" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Duration (hours) *</label>
+                                    <select id="bookingDuration" required>
+                                        <option value="1">1 hour</option>
+                                        <option value="2">2 hours</option>
+                                        <option value="3">3 hours</option>
+                                        <option value="4">4 hours</option>
+                                        <option value="5">5+ hours</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Number of People *</label>
+                                    <input type="number" id="bookingPeople" min="1" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Special Requests</label>
+                                <textarea id="bookingRequests" placeholder="Any special requests or requirements"></textarea>
+                            </div>
+                            
+                            <h3 style="margin-top: 20px;">Payment Information</h3>
+                            <div class="payment-method selected">
+                                <label>
+                                    <input type="radio" name="bookingPayment" value="bank_transfer" checked>
+                                    Bank Transfer
+                                    <img src="image.png" class="payment-logo" alt="Bank Transfer">
+                                </label>
+                                <div class="payment-method-details">
+                                    <div style="margin-top: 10px;">
+                                        <div class="bank-info">
+                                           <p><strong>Bank Name:</strong> Bank Of Maldives</p>
+                                            <p><strong>Account Name:</strong> SCORPIORA</p>
+                                            <p><strong>Account Number:</strong> <span class="bank-account-number" id="bookingAccountNumber">7770000203219</span></p>
+                                        </div>
+                                        <p style="margin: 10px 0;">Please upload your payment slip after completing the bank transfer.</p>
+                                        
+                                        <div class="upload-area" id="bookingUploadArea">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <p>Click to upload payment slip</p>
+                                            <p style="font-size: 12px; color: #666;">(JPEG, PNG or PDF, max 5MB)</p>
+                                            <input type="file" id="bookingFileInput" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
+                                            <div class="file-name" id="bookingFileName"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn" style="margin-top: 20px;">Book Now</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+            
+            // Add event listeners for booking options
+            document.querySelectorAll('.booking-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    // Remove selected class from all options
+                    document.querySelectorAll('.booking-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked option
+                    option.classList.add('selected');
+                    
+                    // Get booking type
+                    state.bookingType = option.dataset.type;
+                    
+                    // Update form title
+                    document.getElementById('bookingFormTitle').textContent = 
+                        state.bookingType.charAt(0).toUpperCase() + state.bookingType.slice(1).replace('-', ' ') + ' Booking';
+                    
+                    // Show form
+                    document.getElementById('bookingForm').classList.add('active');
+                });
+            });
+            
+            // File upload handling for booking
+            const uploadArea = document.getElementById('bookingUploadArea');
+            const fileInput = document.getElementById('bookingFileInput');
+            const fileName = document.getElementById('bookingFileName');
+            
+            uploadArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('File size exceeds 5MB limit');
+                        return;
+                    }
+                    
+                    const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+                    if (!validTypes.includes(file.type)) {
+                        alert('Please upload a JPEG, PNG, or PDF file');
+                        return;
+                    }
+                    
+                    // Read the file and convert to base64
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        fileName.textContent = file.name;
+                        state.uploadedFile = event.target.result; // Store base64 string
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Account number copy functionality for booking
+            const accountNumber = document.getElementById('bookingAccountNumber');
+            accountNumber.addEventListener('click', () => {
+                navigator.clipboard.writeText(accountNumber.textContent)
+                    .then(() => {
+                        copyNotification.textContent = 'Account number copied to clipboard!';
+                        copyNotification.classList.add('show');
+                        setTimeout(() => {
+                            copyNotification.classList.remove('show');
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                    });
+            });
+            
+            // Booking form submission
+            document.getElementById('bookingFormData')?.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                if (!state.uploadedFile) {
+                    alert('Please upload your payment slip');
+                    return;
+                }
+                
+                const bookingDetails = {
+                    type: state.bookingType,
+                    name: document.getElementById('bookingName').value,
+                    phone: document.getElementById('bookingPhone').value,
+                    date: document.getElementById('bookingDate').value,
+                    time: document.getElementById('bookingTime').value,
+                    duration: document.getElementById('bookingDuration').value,
+                    people: document.getElementById('bookingPeople').value,
+                    requests: document.getElementById('bookingRequests').value,
+                    paymentSlip: state.uploadedFile,
+                    status: 'pending',
+                    createdAt: new Date().toISOString(),
+                    pointsRedemption: isPointsRedemption
+                };
+                
+                // Generate booking reference
+                const bookingRef = 'BK-' + Math.floor(100000 + Math.random() * 900000);
+                bookingDetails.bookingRef = bookingRef;
+                
+                // If points redemption, deduct points
+                if (isPointsRedemption) {
+                    const pointsProduct = state.pointsProducts.find(
+                        p => p.bookingType === state.bookingType
+                    );
+                    
+                    if (pointsProduct) {
+                        deductPoints(pointsProduct.points);
+                    }
+                }
+                
+                // Save to Firebase
+                database.ref('bookings').push(bookingDetails)
+                    .then(() => {
+                        alert(`Booking confirmed! Your reference number is: ${bookingRef}`);
+                        loadPage('home');
+                    })
+                    .catch(error => {
+                        alert('Error creating booking: ' + error.message);
+                    });
+            });
+        }
+
+    </script>
+</body>
+</html>
